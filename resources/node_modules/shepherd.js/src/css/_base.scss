@@ -1,0 +1,99 @@
+@import "./mixins/cancel-link";
+@import "./mixins/pie-clearfix";
+@import "./mixins/inline-block";
+@import "./mixins/shepherd-button";
+@import "./helpers/popper";
+@import "./helpers/popper-theme-arrows";
+
+@include popper();
+@include popper-theme-arrows($arrow-size: $arrow-size, $arrow-pointer-events: $arrow-pointer-events, $background-color: $background-color, $color: $color, $use-drop-shadow: $use-drop-shadow);
+
+.shepherd-element {
+  // Make the arrow color the same as the header color when the arrow is on the top
+
+  &[x-placement^="bottom"] {
+    &.shepherd-has-title {
+      .popper__arrow {
+        border-bottom-color: $header-background-color;
+      }
+    }
+  }
+
+  &.shepherd-has-title .shepherd-content header {
+    background: $header-background-color;
+    padding: 1em;
+
+    a.shepherd-cancel-link {
+      margin-bottom: 0;
+      padding: 0;
+    }
+  }
+
+  &.shepherd-has-cancel-link .shepherd-content header h3 {
+    float: left;
+  }
+
+  .shepherd-content {
+    padding: 0;
+
+    * {
+      font-size: inherit;
+    }
+
+    header {
+      @include pie-clearfix;
+
+      padding: 1em 1em 0;
+
+      h3 {
+        font-weight: normal;
+        margin: 0;
+      }
+
+      a.shepherd-cancel-link {
+        @include cancel-link;
+      }
+    }
+
+    footer {
+      padding: 0 1em 1em;
+
+      .shepherd-buttons {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        text-align: right;
+
+        li {
+          display: inline;
+          margin: 0;
+          padding: 0;
+
+          .shepherd-button {
+            @include inline-block;
+
+            cursor: pointer;
+            margin: 0 0.5em 0 0;
+          }
+
+          &:last-child .shepherd-button {
+            margin-right: 0;
+          }
+        }
+      }
+    }
+
+    .shepherd-text {
+      padding: 1em;
+
+      p {
+        line-height: 1.3em;
+        margin: 0 0 0.5em;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}

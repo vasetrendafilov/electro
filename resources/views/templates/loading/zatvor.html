@@ -1,0 +1,173 @@
+<style media="screen">
+#loading {
+ background-color: #000;
+ overflow: hidden;
+ position: fixed;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100vh;
+ z-index: 5;
+}
+
+#loading .center {
+  display: inline-block;
+  -webkit-transform: translate(calc(-50% + 50vw), calc(-50% + 50vh));
+          transform: translate(calc(-50% + 50vw), calc(-50% + 50vh));
+  -webkit-filter: contrast(3);
+          filter: contrast(3);
+}
+
+#loading .loader {
+  background: #000;
+  font-size: 0;
+  padding: 60px;
+  text-align: center;
+  position: relative;
+  width: 290px;
+}
+
+#loading .text {
+  -webkit-animation: b 5s infinite;
+          animation: b 5s infinite;
+  color: #2ff;
+  font-size: 24px;
+  line-height: 145px;
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 0;
+}
+
+#loading .dot {
+  border-radius: 10px;
+  display: inline-block;
+  -webkit-filter: blur(10px);
+          filter: blur(10px);
+  height: 20px;
+  width: 20px;
+}
+#loading .dot:first-child {
+  -webkit-animation: fc 5s ease infinite;
+          animation: fc 5s ease infinite;
+  float: left;
+}
+#loading .dot:last-child {
+  -webkit-animation: lc 10s ease infinite;
+          animation: lc 10s ease infinite;
+  float: right;
+}
+
+@-webkit-keyframes fc {
+  0% {
+    background: #ddf;
+    -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+  }
+  25% {
+    background: #1d2;
+  }
+  50% {
+    background: #aaf;
+    -webkit-transform: translate3d(140px, 0, 0);
+            transform: translate3d(140px, 0, 0);
+  }
+  100% {
+    background: #ddf;
+    -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes fc {
+  0% {
+    background: #ddf;
+    -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+  }
+  25% {
+    background: #1d2;
+  }
+  50% {
+    background: #aaf;
+    -webkit-transform: translate3d(140px, 0, 0);
+            transform: translate3d(140px, 0, 0);
+  }
+  100% {
+    background: #ddf;
+    -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+  }
+}
+@-webkit-keyframes lc {
+  0%{
+    background: #3fd;
+    -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+  }
+  25% {
+    background: #1d2;
+  }
+  50% {
+    background: #aaf;
+    -webkit-transform: translate3d(-140px, 0, 0);
+            transform: translate3d(-140px, 0, 0);
+  }
+  100% {
+    background: #3fd;
+    -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes lc {
+  0% {
+    background: #3fd;
+    -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+  }
+  25% {
+    background: #1d2;
+  }
+  50% {
+    background: #aaf;
+    -webkit-transform: translate3d(-140px, 0, 0);
+            transform: translate3d(-140px, 0, 0);
+  }
+  100% {
+    background: #3fd;
+    -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+  }
+}
+@-webkit-keyframes b {
+  0%,
+  100% {
+    -webkit-filter: blur(5px);
+            filter: blur(5px);
+  }
+  50% {
+    -webkit-filter: blur(1.5px);
+            filter: blur(1.5px);
+  }
+}
+@keyframes b {
+  0%,
+  100% {
+    -webkit-filter: blur(5px);
+            filter: blur(5px);
+  }
+  50% {
+    -webkit-filter: blur(1.5px);
+            filter: blur(1.5px);
+  }
+}
+
+</style>
+<div class="center">
+  <div class="loader">
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
+  <span class="text pocekaj">ПОЧЕКАЈТЕ <span></span></span>
+  </div>
+</div>

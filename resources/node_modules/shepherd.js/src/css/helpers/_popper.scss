@@ -1,0 +1,10 @@
+@mixin popper() {
+  .shepherd-element,
+  .shepherd-element * {
+    &,
+    &:after,
+    &:before {
+      box-sizing: border-box;
+    }
+  }
+}

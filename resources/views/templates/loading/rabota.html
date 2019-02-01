@@ -1,0 +1,123 @@
+<style media="screen">
+@keyframes hgrotate {
+75% {
+  -ms-transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  transform: rotate(0deg);
+}
+100% {
+  -ms-transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+}
+@keyframes topsand {
+0% {
+  clip: rect(0, 200px, 250px, 0);
+}
+70% {
+  clip: rect(104.1666666667px, 200px, 250px, 0);
+}
+100% {
+  clip: rect(104.1666666667px, 200px, 250px, 0);
+}
+}
+@keyframes bottomsand {
+0% {
+  clip: rect(104.1666666667px, 200px, 250px, 0);
+}
+70% {
+  clip: rect(0, 200px, 250px, 0);
+}
+100% {
+  clip: rect(0, 200px, 250px, 0);
+}
+}
+#loading{
+  background-color: #000;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 5;
+}
+#loading h1{
+  position: absolute;
+  top: 78%;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+}
+#loading .loading {
+position: absolute;
+width: 200px;
+height: 270px;
+top: 50%;
+left: 0;
+right: 0;
+bottom: 50%;
+margin: auto;
+border-top: 10px solid #ec1a23;
+border-bottom: 10px solid #ec1a23;
+}
+
+#loading .hourglass-top, .hourglass-bottom {
+position: relative;
+border-left: 80px solid transparent;
+border-right: 80px solid transparent;
+}
+
+#loading .hourglass-top {
+border-top: 125px solid #FFFFFF;
+}
+
+#loading .hourglass-bottom {
+border-bottom: 125px solid #FFFFFF;
+}
+
+#loading .sand-top, .sand-bottom {
+position: absolute;
+border-left: 66.6666666667px solid transparent;
+border-right: 66.6666666667px solid transparent;
+right: 50%;
+}
+
+#loading .sand-top, .sand-bottom, .loading {
+animation-timing-function: linear;
+animation-duration: 1.6s;
+animation-iteration-count: infinite;
+}
+
+#loading .sand-top {
+animation-name: topsand;
+border-top: 104.1666666667px solid rgba(0, 0, 0, 0.4);
+transform: translate(50%, -100%);
+}
+
+#loading .sand-bottom {
+animation-name: bottomsand;
+border-bottom: 104.1666666667px solid rgba(0, 0, 0, 0.4);
+transform: translate(50%, 0);
+}
+
+#loading .loading {
+animation-name: hgrotate;
+}
+
+</style>
+<div class="loading">
+    <div class="hourglass">
+        <div class="hourglass-top">
+            <div class="sand-top">
+            </div>
+        </div>
+        <div class="hourglass-bottom">
+            <div class="sand-bottom">
+            </div>
+        </div>
+    </div>
+</div>
+<h1>ПОЧЕКАЈТЕ <span>...</span></h1>

@@ -1,0 +1,296 @@
+<div class="messenger">
+  <div class="chat-header">
+  <span id="friend-name"></span><button type="button" id="close-chat"><span class="carousel-control-next-icon" aria-hidden="true"></span></button>
+  </div>
+  <div id="chat-history" class="chat-history"  onmouseover="this.style.overflow='scroll'" onmouseout="this.style.overflow='hidden'">
+      <ul></ul>
+  </div>
+  <div class="chat-message" >
+   <textarea  id="message-to-send" placeholder="Внеси порака..." rows="1"></textarea>
+   <button type="button" id="send">
+     <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" fill="var(--red)" viewBox="0 0 24 24" style="display:block">
+       <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+       <path d="M0 0h24v24H0z" fill="none"/>
+     </svg>
+   </button>
+   <button type="button" id="emoji">
+     <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" fill="#fff" viewBox="0 0 24 24"  style="display:block">
+         <path d="M0 0h24v24H0z" fill="none"/>
+         <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
+     </svg>
+   </button>
+  </div>
+</div>
+<div class="emoji-layout">
+  <ul class="people-emojis" id="emoji-people">
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/laughing.png" name=":laughing:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/relaxed.png" name=":relaxed:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/kissing_heart.png" name=":kissing_heart:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/smile.png" name=":smile:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/satisfied.png" name=":satisfied:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/sleeping.png" name=":sleeping:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/confused.png" name=":confused:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/stuck_out_tongue.png" name=":stuck_out_tongue:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/cold_sweat.png" name=":cold_sweat:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/worried.png" name=":worried:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/hushed.png" name=":hushed:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/astonished.png" name=":astonished:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/angry.png" name=":angry:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/sunglasses.png" name=":sunglasses:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/triumph.png" name=":triumph:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/joy.png" name=":joy:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/smiling_imp.png" name=":smiling_imp:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/imp.png" name=":imp:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/rage.png" name=":rage:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/dizzy_face.png" name=":dizzy_face:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/innocent.png" name=":innocent:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/expressionless.png" name=":expressionless:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/sleepy.png" name=":sleepy:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/stuck_out_tongue_winking_eye.png" name=":stuck_out_tongue_winking_eye:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/grimacing.png" name=":grimacing:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/heart_eyes.png" name=":heart_eyes:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/sob.png" name=":sob:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/scream.png" name=":scream:" ></img></li>
+    </ul>
+    <ul class="people-emojis" id="emoji-symbols" style="display:none">
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/yellow_heart.png" name=":yellow_heart:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/heart.png" name=":heart:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/blue_heart.png" name=":blue_heart:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/broken_heart.png" name=":broken_heart:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/exclamation.png" name=":exclamation:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/grey_question.png" name=":grey_question:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/boom.png" name=":boom:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/anger.png" name=":anger:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/zzz.png" name=":zzz:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/fire.png" name=":fire:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/star.png" name=":star:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/punch.png" name=":punch:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/v.png" name=":v:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/-1.png" name=":-1:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/thumbsup.png" name=":thumbsup:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/wave.png" name=":wave:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/metal.png" name=":metal:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/pray.png" name=":pray:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/trollface.png" name=":trollface:" ></img></li>
+  </ul>
+  <ul class="people-emojis" id="emoji-nature" style="display:none">
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/sunny.png" name=":sunny:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/snowflake.png" name=":snowflake:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/zap.png" name=":zap:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/dog.png" name=":dog:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/mouse.png" name=":mouse:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/hamster.png" name=":hamster:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/horse.png" name=":horse:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/snake.png" name=":snake:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/elephant.png" name=":elephant:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/monkey.png" name=":monkey:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/dolphin.png" name=":dolphin:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/four_leaf_clover.png" name=":four_leaf_clover:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/herb.png" name=":herb:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/cactus.png" name=":cactus:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/evergreen_tree.png" name=":evergreen_tree:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/full_moon.png" name=":full_moon:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/crescent_moon.png" name=":crescent_moon:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/earth_asia.png" name=":earth_asia:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/volcano.png" name=":volcano:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/octocat.png" name=":octocat:" ></img></li>
+  </ul>
+  <ul class="people-emojis" id="emoji-objects" style="display:none">
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/moneybag.png" name=":moneybag:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/yen.png" name=":yen:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/dollar.png" name=":dollar:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/euro.png" name=":euro:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/credit_card.png" name=":credit_card:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/bomb.png" name=":bomb:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/package.png" name=":package:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/bookmark_tabs.png" name=":bookmark_tabs:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/clipboard.png" name=":clipboard:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/minibus.png" name=":minibus:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/blue_car.png" name=":blue_car:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/police_car.png" name=":police_car:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/truck.png" name=":truck:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/station.png" name=":station:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/construction.png" name=":construction:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/busstop.png" name=":busstop:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/moyai.png" name=":moyai:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/atm.png" name=":atm:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/ticket.png" name=":ticket:" ></img></li>
+
+  <li><img class="emoji-btn" src="/mafija2/resources/img/emojis/beginner.png" name=":beginner:" ></img></li>
+  </ul>
+  <div class="emoji-menu">
+    <div class="btn-group w-100">
+      <button type="button" class="emoji-chose" name="#emoji-people"><img  src="/mafija2/resources/img/emojis/smile.png" ></img></button>
+      <button type="button" class="emoji-chose" name="#emoji-symbols"><img src="/mafija2/resources/img/emojis/punch.png"></img></button>
+      <button type="button" class="emoji-chose"  name="#emoji-nature"><img src="/mafija2/resources/img/emojis/octocat.png" ></img></button>
+      <button type="button" class="emoji-chose" name="#emoji-objects"><img src="/mafija2/resources/img/emojis/bomb.png" ></img></button>
+    </div>
+    </div>
+  <div class=" message-emoji"></div>
+</div>
+  <script type="text/javascript">
+  $(document).ready(function(){
+      var j=0;
+      $('#emoji').click(function() {
+        if(j == 0){
+          $('.emoji-layout').slideDown('slow',function(){
+            $('.emoji-chose').click(function(){
+              $('.people-emojis').css('display','none');
+              $($(this).attr('name')).css('display','');
+            });
+          });
+               j = 1;
+           }else{
+            $('.emoji-layout').slideUp('slow');
+               j = 0;
+             }
+      });
+      $('.emoji-btn').click(function(){
+        $('#message-to-send').val($('#message-to-send').val() + $(this).attr('name'));
+        $('#message-to-send').focus();
+      });
+      msgCount = 0;
+      $('#send').click(function(){
+        if (msgCount == 0) {
+          var username = $('#friend-name').text();
+          $.get("/mafija2/public/chat/add",{username:username});
+          msgCount = 1;
+        }
+      });
+      $('#message-to-send').keydown(function(e){
+        if (e.keyCode == 13 && !e.shiftKey){
+          e.preventDefault();
+          return false;
+        }
+        });
+      $('#message-to-send').on('paste input', function () {
+        if($(this).val() == ""){
+          $(this).height('24px');
+        }
+          if ($(this).outerHeight() > this.scrollHeight){
+              $(this).height(1)
+          }
+          while ($(this).outerHeight() < this.scrollHeight + parseFloat($(this).css("borderTopWidth")) + parseFloat($(this).css("borderBottomWidth"))){
+              $(this).height($(this).height() + 1)
+          }
+      });
+      $('#close-chat').click(function(){
+        $('#messenger-container').fadeOut();
+        $('#chat-history ul').html(' ');
+      });
+  });
+  </script>
+
+  <script id="message-template" type="text/x-handlebars-template">
+      <li class="clearfix" data-order={{tt}}>
+          <div class="message-data text-right">
+              <span class="message-data-time">{{time}}</span> &nbsp; &nbsp;
+              <span class="message-data-name">{{user.first}}</span>
+          </div>
+          <div class="message other-message float-right">
+              {{{messageOutput}}}
+          </div>
+      </li>
+  </script>
+  <script id="message-response-template" type="text/x-handlebars-template">
+      <li data-order={{tt}}>
+          <div class="message-data ">
+              <span class="message-data-name">{{user.first}}</span>
+              <span class="message-data-time">{{time}}</span>
+          </div>
+          <div class="message my-message">
+              {{{messageOutput}}}
+          </div>
+
+      </li>
+  </script>
+  <script src="http://localhost/mafija2/resources/node_modules/chat-engine/dist/chat-engine.js" type="text/javascript"></script>
+  <script src="http://localhost/mafija2/resources/node_modules/chat-engine-emoji/dist/chat-engine-emoji.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.0/handlebars.min.js'></script>
+  <script src="http://localhost/mafija2/resources/js/chat.js" type="text/javascript"></script>

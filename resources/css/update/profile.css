@@ -1,0 +1,13 @@
+.menu{
+  display: none!important;
+}
+.chatMenu{
+  display: none!important;
+}
+.btn{
+  margin-top: 10px;
+  margin-bottom: 50px;
+}
+h2{
+  margin-bottom: 18px;
+}

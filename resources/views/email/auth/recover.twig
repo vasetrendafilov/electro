@@ -1,0 +1,32 @@
+{% extends 'email/templates/default.twig' %}
+{% block content %}
+<table border="0" cellpadding="0" cellspacing="0" width="100%" style="padding:40px 0 0 0;">
+       <tr>
+           <td>
+               <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" bgcolor="#ffffff" style="border:1px solid #CCCCCC;border-radius:5px;-webkit-border-radius:5px;-moz-border-radius:5px;">
+                   <tr>
+                       <td align="center" style="border-bottom:1px solid #CCCCCC;"> <a href="#"><img src="https://i.imgur.com/Lar48Op.png" alt="ДОБРЕДОЈОДВТЕ" width="100%" style="display: block; width:100%; height:auto;" /></a>
+                       </td>
+                   </tr>
+                   <tr>
+                       <td style="padding: 30px 20px 15px 20px;">
+                           <table border="0" cellpadding="0" cellspacing="0" width="100%" style="font-size:16px;color:#666666;">
+                               <tr>
+                                   <td> <b>Здраво, {{user.username}}!</b> </td>
+                               </tr>
+                               <tr>
+                                   <td style="padding: 20px 0 20px 0;">Рестартирај ја лозинката!</td>
+                               </tr>
+                               <tr>
+                                   <td align="center"><a href="{{baseUrl}}{{path_for('password.reset')}}?email={{user.email}}&recover_hash={{recover_hash | url_encode}}" style="width:240px; background: #cf142b; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; color: #ffffff; font-weight: bold; text-decoration: none; display: block; padding:15px 10px 15px 10px;">
+                                     РЕСТАРТИРАЈ</a>
+                                   </td>
+                               </tr>
+                           </table>
+                       </td>
+                   </tr>
+               </table>
+           </td>
+       </tr>
+   </table>
+{% endblock %}

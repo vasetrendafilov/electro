@@ -1,0 +1,15 @@
+.forgot-pass{
+  float: right;
+  color: white!important;
+}
+.forgot-pass:hover{
+  text-decoration: underline;
+}
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::before{
+  background-color: var(--red);
+}
+.custom-control-input:focus~.custom-control-label::before{
+  border-color:  rgba(220,53,69,.5);
+  box-shadow: 0 0 0 0.2rem rgba(220,53,69,.5);
+  -webkit-box-shadow: 0 0 0 0.2rem rgba(220,53,69,.5);
+}

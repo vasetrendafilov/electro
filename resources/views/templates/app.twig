@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" href="{{baseUrl}}/resources/img/logo4.png">
+    <title>TheUnderWorld</title>
+    <!-- Loading screen -->
+    <link rel="stylesheet" href="{{baseUrl}}/resources/css/templates/loading.css">
+    <body>
+      <div class="wrap">
+        <div class="spinner spinner-1">
+          <div class="spiner spiner-2"><span>UNDERWORLD</span></div>
+        </div>
+      </div>
+    </body>
+    <!-- Loading screen -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{baseUrl}}/resources/css/templates/bootstrap.min.css">
+    <link rel="stylesheet" href="{{baseUrl}}/resources/css/templates/main.css">
+  <!--  <link rel="stylesheet" href="{{baseUrl}}/resources/css/chat.css"> -->
+    {% block head %} {% endblock %}
+  </head>
+  <body>
+    <style id="barStyle"></style>
+    {% if device.isMobile() %}
+    <script type="text/javascript">
+      const  isMobile = true;
+    </script>
+    {% else %}
+    <script type="text/javascript">
+      const  isMobile = false;
+    </script>
+    {% endif %}
+    <script type="text/javascript" src="{{baseUrl}}/resources/js/templates/jquery-3.2.1.js"></script>
+    <!-- Simplebar <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
+    <script src="{{baseUrl}}/resources/js/templates/main.js"></script>
+    <script type="text/javascript" src="{{baseUrl}}/resources/js/templates/rotate.js"></script>
+    <div id="temp1" style="display:none"></div><div id="temp2" style="display:none"></div>
+    <div id="temp3" style="display:none"></div><div id="temp4" style="display:none"></div>
+    <div id="temp5" style="display:none"></div><div id="loading" style="display:none"></div>
+    <!-- Navigation -->
+    <link rel="stylesheet" href="{{baseUrl}}/resources/css/templates/navigation.css">
+    {%include 'templates/partials/navigation.twig' %}
+    {% if auth.check %}
+    <script type="text/javascript" src="{{baseUrl}}/resources/js/templates/navigation.js"> </script>
+    <input type="hidden" id="id" value="{{auth.user.id}}">
+    <input type="hidden" id="username" value="{{auth.user.username}}">
+    {% endif %}
+    <!-- Navigation -->
+    <div class="container-fluid" id="container">
+    {%include 'templates/partials/flash.twig' %}
+    {% block content %} {% endblock %}
+    </div>
+    <div id="chat-container"></div>
+    <div class="background"></div>
+    <link rel="stylesheet" href="{{baseUrl}}/resources/css/templates/breakpoints.css">
+    <script src="{{baseUrl}}/resources/js/templates/propper.js"></script>
+    <script src="{{baseUrl}}/resources/js/templates/bootstrap.min.js"></script>
+    {% if auth.check %}
+    <script src="{{baseUrl}}/resources/js/templates/swipe.js"></script>
+    <script src="{{baseUrl}}/resources/node_modules/shepherd.js/dist/js/shepherd.min.js"></script>
+    {% endif %}
+  </body>
+</html>

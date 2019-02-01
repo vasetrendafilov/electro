@@ -1,0 +1,33 @@
+{
+  "app":{
+    "baseUrl" : "http://localhost/mafija2",
+    "recaptcha":"6LeVuSoUAAAAACG7LW0ii_PAQBpM9yokuqFC6PdX",
+    "hash":{
+      "algo": "PASSWORD_BCRYPT",
+      "cost": 10
+    }
+  },
+  "db":{
+    "driver":"mysql",
+    "host":"localhost",
+    "database":"mafija",
+    "username":"root",
+    "password":"",
+    "collation":"utf8_unicode_ci",
+    "charset":"utf8",
+    "prefix":""
+  },
+  "mail":{
+    "smtp_debug": 2,
+    "host": "smtp.gmail.com",
+    "smtp_auth": true,
+    "username": "theuw.mk@gmail.com",
+    "password": "Underworld123",
+    "smtp_secure": "tls",
+    "port": 587
+  },
+  "auth":{
+   "session": "user_id",
+   "remember": "user_r"
+  }
+}

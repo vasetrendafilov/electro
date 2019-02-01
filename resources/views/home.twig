@@ -1,0 +1,969 @@
+{%extends 'templates/app.twig'%}
+{% block head %}
+<link rel="stylesheet" href="{{baseUrl}}/resources/css/templates/footable.bootstrap.min.css">
+<link rel="stylesheet" href="{{baseUrl}}/resources/node_modules/shepherd.js/dist/css/shepherd-theme-arrows.css"/>
+<link rel="stylesheet" href= "{{baseUrl}}/resources/css/home.css">
+<link rel="stylesheet" href="{{baseUrl}}/resources/css/chat.css">
+{% endblock %}
+{% block content %}
+ {% if auth.check %}
+ <div class="card-columns carCards">
+  <div class="card" >
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col" style="font-size: 24px;">НОВОСТИ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td >The UnderWorld update <button class="plus" type="button" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus"></i></button></td>
+        </tr>
+        <tr>
+          <td >Ре-дизајн<button type="button"class="plus" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus"></i></button></td>
+        </tr>
+        <tr>
+          <td>Наградна игра<button class="plus" type="button" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus"></i></button></td>
+        </tr>
+      </tbody>
+    </table>
+ </div>
+<div class="card">
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Име</th>
+        <th scope="col">Pari</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for key,item in auth.user.topPlyers('pari',5) %}
+      <tr>
+        <td scope="row">{{key + 1}}</td>
+        <td>
+        <img src="{{auth.user.get_gravatar(auth.user.getEmail(item.user_id),40)}}" width="40" height="40" style="border-radius:50%;"> {{auth.user.getName(item.user_id)}}
+        </td>
+        <td>
+          {{item.pari}}$
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<div class="card">
+  <style media="screen">
+    tr td svg{
+       margin-bottom: -8px;
+       width: 30px;
+    }
+  </style>
+  <table class="table" id="misii" data-paging="true" data-paging-size="5" data-paging-position="center">
+	<thead class="thead-dark">
+		<tr>
+			<th>#</th>
+			<th>Misija</th>
+			<th data-breakpoints="xs sm md lg">Potrebno</th>
+			<th data-breakpoints="xs sm md lg">Dobivka</th>
+		</tr>
+	</thead>
+	<tbody>
+    {% for item in misii %}
+    <tr>
+      <td scope="row" class="pb-0">
+        {% if item.rank > auth.user.prom.rank %}
+          {%include 'templates/svg/block.svg' %}
+        {% else %}
+          {% if item.status(auth.user.inventory) %}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 26" width="25px" class="d-inline-block mt-1">
+            <path fill="var(--green)" d="m.3,14c-0.2-0.2-0.3-0.5-0.3-0.7s0.1-0.5 0.3-0.7l1.4-1.4c0.4-0.4 1-0.4 1.4,0l.1,.1 5.5,5.9c0.2,0.2 0.5,0.2 0.7,0l13.4-13.9h0.1v-8.88178e-16c0.4-0.4 1-0.4 1.4,0l1.4,1.4c0.4,0.4 0.4,1 0,1.4l0,0-16,16.6c-0.2,0.2-0.4,0.3-0.7,0.3-0.3,0-0.5-0.1-0.7-0.3l-7.8-8.4-.2-.3z"/>
+            </svg>
+          {% else %}
+            <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21.9 21.9"  width="25px" class="d-inline-block mt-1">
+            <path fill="var(--red)" d="M14.1,11.3c-0.2-0.2-0.2-0.5,0-0.7l7.5-7.5c0.2-0.2,0.3-0.5,0.3-0.7s-0.1-0.5-0.3-0.7l-1.4-1.4C20,0.1,19.7,0,19.5,0  c-0.3,0-0.5,0.1-0.7,0.3l-7.5,7.5c-0.2,0.2-0.5,0.2-0.7,0L3.1,0.3C2.9,0.1,2.6,0,2.4,0S1.9,0.1,1.7,0.3L0.3,1.7C0.1,1.9,0,2.2,0,2.4  s0.1,0.5,0.3,0.7l7.5,7.5c0.2,0.2,0.2,0.5,0,0.7l-7.5,7.5C0.1,19,0,19.3,0,19.5s0.1,0.5,0.3,0.7l1.4,1.4c0.2,0.2,0.5,0.3,0.7,0.3  s0.5-0.1,0.7-0.3l7.5-7.5c0.2-0.2,0.5-0.2,0.7,0l7.5,7.5c0.2,0.2,0.5,0.3,0.7,0.3s0.5-0.1,0.7-0.3l1.4-1.4c0.2-0.2,0.3-0.5,0.3-0.7  s-0.1-0.5-0.3-0.7L14.1,11.3z"/>
+            </svg>
+          {% endif %}
+        {% endif %}
+      </td>
+      <td>{{item.title}}</td>
+      <td>
+        {% for key, x in item.konditions('requirements') %}
+          <div class="col-auto">
+            {% if key == 'pari' %}{%include 'templates/svg/money-bag.svg' %}{% endif %}
+            {% if key == 'mok' %}{%include 'templates/svg/mok.svg' %}{% endif %}
+            {% if key == 'pocit' %}{%include 'templates/svg/gem.svg' %}{% endif %}
+            {% if key == 'points' %}{%include 'templates/svg/flag.svg' %}{% endif %}
+            {{x}}{{key == 'pari' ? '$'}}
+          </div>
+        {% endfor %}
+      </td>
+      <td>
+        {% for key, x in item.konditions('price') %}
+          <div class="col-auto">
+            {% if key == 'pari' %}{%include 'templates/svg/money-bag.svg' %}{% endif %}
+            {% if key == 'mok' %}{%include 'templates/svg/mok.svg' %}{% endif %}
+            {% if key == 'pocit' %}{%include 'templates/svg/gem.svg' %}{% endif %}
+            {% if key == 'points' %}{%include 'templates/svg/flag.svg' %}{% endif %}
+            {{x}}{{key == 'pari' ? '$'}}
+          </div>
+        {% endfor %}
+      </td>
+    </tr>
+    {% endfor %}
+	</tbody>
+</table>
+<script type="text/javascript">
+$(function(){
+  $('#misii').footable();
+});
+</script>
+</div>
+ </div>
+ <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="color:black">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title" id="exampleModalLabel">The UnderWorld update v1.1</h5>
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+         </button>
+       </div>
+       <div class="modal-body">
+ 	      Нови автомобили
+ 	   <br>
+ 	   Нови жени
+ 	   <br>
+ 	   Нови дроги
+       </div>
+     </div>
+   </div>
+ </div>
+  {%include 'buttons.twig' %}
+  <script src="{{baseUrl}}/resources/js/templates/footable.min.js"></script>
+{% else %}
+<style media="screen">
+  #container{
+    padding: 0px!important;
+    color: #fff;
+  }
+  video{
+    display: block;
+  }
+  .popup{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 80px 15px 0 15px;
+    display: none;
+    background: rgba(0,0,0,0.8);
+  }
+  .popup .row .col .tile{
+    background: transparent;
+    border: 1px solid #fff;
+    border-radius: .25rem;
+	  padding:15px;
+    margin-bottom: 20px;
+  }
+  .popup .row .col .tile .title{
+    font-size: 30px;
+    text-transform: uppercase;
+  }
+  .carousel , .carousel-inner{
+  height:100%;
+  }
+   .social svg{
+    width: 40px;
+    height: 40px;
+    margin: 0 10px 0 10px;
+     }
+   .social svg:hover{
+     fill: #ec1a23;
+      }
+  .card{
+    border-radius: 0px;
+    border: 0;
+    color: #fff;
+  }
+  .card.shadow{
+    -webkit-box-shadow: 0 7px 15px 4px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 7px 15px 4px rgba(0, 0, 0, 0.7);
+  }
+  .card .card-header{
+    background-color: rgba(0,0,0,.08);
+
+  }
+  .card .card-title{
+    padding:15px 15px 0 15px;
+    font-size: 28px;
+    text-transform: uppercase;
+  }
+  .accordion .card{
+    background-color: transparent;
+  }
+  .accordion .card .btn-link{
+    color: #fff;
+  }
+  .card.last .card-header{
+  border-bottom:1px solid #fff;
+  }
+  .card.prof{
+    background-color: #fff;
+    color: black;
+    border-radius: .25rem;
+	border:1px solid #fff;
+  }
+  .card-img-overlay img{
+    border-radius: 50%;
+    margin: auto;
+    display: block;
+  }
+  .carousel-indicators{z-index: 1;}
+  .card-img-overlay .name{
+    margin-top: 10px;
+  }
+  .card-img-overlay .name .social a svg{
+    width:26px;
+  }
+  .faq{
+	  margin:0;
+	  padding:20px;
+	  display:inline-block;
+  }
+  .faq li{
+	  margin:25px 40px;
+	  list-style:none;
+	  font-size:20px;
+  }
+  .faq li span{
+	  padding:10px;
+	  background-color:#000;
+	  border-radius:.25rem;
+	  display:inline-block;
+  }
+  .faq li span img{
+	margin-left:-65px;
+	margin-right:13px;
+  }
+  .faq li span img.even{
+  position: absolute;
+	margin-right:-65px;
+	margin-left:13px;
+  margin-top: -40px;
+  }
+  .faq li:nth-child(even){
+    text-align:right;
+  }
+   .faq li:nth-child(even) > span{
+    background-color:#fff;
+	color:#000;
+   }
+   .fit-image{
+    display:block;
+    width:100%;
+	height: 100vh;
+   }
+</style>
+  {% if device.isMobile() and not device.isTablet() %}
+  <div class="fit-image">
+	<img src="{{baseUrl}}/resources/img/homeMobile.jpg" width="100%"  height="100%"  id="mainimg" style="display:block;object-fit:fill">
+  </div>
+  {% else %}
+  <style media="screen">
+  .row.justify-content-center{margin-top:100px;}
+  </style>
+    <video autoplay muted width="100%" poster="{{baseUrl}}/resources/img/black.png" onended="play();popup();">
+    <source src="{{baseUrl}}/resources/img/intro.mp4">
+      This video isn't supported in your browser!
+    </video>
+    {% endif %}
+			<div class="popup">
+				<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+				<ol class="carousel-indicators">
+				<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+				<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+				<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+				</ol>
+				<div class="carousel-inner">
+				<div class="carousel-item active">
+				<div class="row justify-content-center">
+				<div class="col {{ device.isMobile() ? 'col-11' : 'col-7'}}">
+				<div class="tile">
+				<h1 class="title">Најави Се</h1>
+				<a role="button" class="btn btn-danger btn-lg" href="{{path_for('auth.signin')}}">НАЈАВА</a>
+				</div>
+				</div>
+				<div class="w-100"></div>
+				<div class="col {{ device.isMobile() ? 'col-11' : 'col-7'}}">
+				<div class="tile">
+				<h1 class="title">Често поставувани прашања</h1>
+				{% if not device.isMobile() %}
+				<p class="text">
+				1.Долyнаведените правила важат само кога си корисник на TheUnderWorld.<br>
+				2. Забрането е изразување на било каква...
+				</p>
+				{% endif %}
+				<a role="button" class="btn btn-danger btn-lg scroll_to" href="#5">ПРАШАЊА</a>
+				</div>
+				</div>
+				</div>
+				</div>
+				<div class="carousel-item">
+				<div class="row justify-content-center">
+				<div class="col {{ device.isMobile() ? 'col-11' : 'col-7'}}">
+				<div class="tile">
+				<h1 class="title">Прочитајте ги правилата и условите</h1>
+				{% if not device.isMobile() %}
+				<p class="text">
+				1.Долyнаведените правила важат само кога си корисник на TheUnderWorld.<br>
+				2. Забрането е изразување на било каква...
+				</p>
+				{% endif %}
+				<a role="button" class="btn btn-danger btn-lg scroll_to" href="#1">ПРАВИЛА/УСЛОВИ</a>
+				</div>
+				</div>
+				<div class="w-100"></div>
+				<div class="col {{ device.isMobile() ? 'col-11' : 'col-7'}}">
+				<div class="tile">
+				<h1 class="title">Заштита на вашите податоци</h1>
+				{% if not device.isMobile() %}
+				<p class="text">
+				1.Долyнаведените правила важат само кога си корисник на TheUnderWorld.<br>
+				2. Забрането е изразување на било каква...
+				</p>
+				{% endif %}
+				<a role="button" class="btn btn-danger btn-lg scroll_to" href="#2">ПРИВАТНА ПОЛИСА</a>
+				</div>
+				</div>
+				</div>
+				</div>
+				<div class="carousel-item">
+				<div class="row justify-content-center">
+				<div class="col {{ device.isMobile() ? 'col-11' : 'col-7'}}">
+				<div class="tile">
+				<h1 class="title">Биографија на основачите</h1>
+				{% if not device.isMobile() %}
+				<p class="text">
+				1.Долyнаведените правила важат само кога си корисник на TheUnderWorld.<br>
+				2. Забрането е изразување на било каква...
+				</p>{% endif %}
+				<a role="button" class="btn btn-danger btn-lg scroll_to" href="#3">ЗА ТИМОТ</a>
+				</div>
+				</div>
+				<div class="w-100"></div>
+				<div class="col {{ device.isMobile() ? 'col-11' : 'col-7'}}">
+				<div class="tile">
+				<h1 class="title">Контакт</h1>
+				<div class="social">
+					<a href="mailto:example@email.com">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550.795 550.795" fill="#fff">
+							<path d="M501.613,491.782c12.381,0,23.109-4.088,32.229-12.16L377.793,323.567c-3.744,2.681-7.373,5.288-10.801,7.767
+						c-11.678,8.604-21.156,15.318-28.434,20.129c-7.277,4.822-16.959,9.737-29.045,14.755c-12.094,5.024-23.361,7.528-33.813,7.528
+						h-0.306h-0.306c-10.453,0-21.72-2.503-33.813-7.528c-12.093-5.018-21.775-9.933-29.045-14.755
+						c-7.277-4.811-16.75-11.524-28.434-20.129c-3.256-2.387-6.867-5.006-10.771-7.809L16.946,479.622
+						c9.119,8.072,19.854,12.16,32.234,12.16H501.613z"/>
+					<path d="M31.047,225.299C19.37,217.514,9.015,208.598,0,198.555V435.98l137.541-137.541
+						C110.025,279.229,74.572,254.877,31.047,225.299z"/>
+					<path d="M520.059,225.299c-41.865,28.336-77.447,52.73-106.75,73.195l137.486,137.492V198.555
+						C541.98,208.396,531.736,217.306,520.059,225.299z"/>
+					<path d="M501.613,59.013H49.181c-15.784,0-27.919,5.33-36.42,15.979C4.253,85.646,0.006,98.97,0.006,114.949
+						c0,12.907,5.636,26.892,16.903,41.959c11.267,15.061,23.256,26.891,35.961,35.496c6.965,4.921,27.969,19.523,63.012,43.801
+						c18.917,13.109,35.368,24.535,49.505,34.395c12.05,8.396,22.442,15.667,31.022,21.701c0.985,0.691,2.534,1.799,4.59,3.269
+						c2.215,1.591,5.018,3.61,8.476,6.107c6.659,4.816,12.191,8.709,16.597,11.683c4.4,2.975,9.731,6.298,15.985,9.988
+						c6.249,3.685,12.143,6.456,17.675,8.299c5.533,1.842,10.655,2.766,15.367,2.766h0.306h0.306c4.711,0,9.834-0.924,15.368-2.766
+						c5.531-1.843,11.42-4.608,17.674-8.299c6.248-3.69,11.572-7.02,15.986-9.988c4.406-2.974,9.938-6.866,16.598-11.683
+						c3.451-2.497,6.254-4.517,8.469-6.102c2.057-1.476,3.605-2.577,4.596-3.274c6.684-4.651,17.1-11.892,31.104-21.616
+						c25.482-17.705,63.01-43.764,112.742-78.281c14.957-10.447,27.453-23.054,37.496-37.803c10.025-14.749,15.051-30.22,15.051-46.408
+						c0-13.525-4.873-25.098-14.598-34.737C526.461,63.829,514.932,59.013,501.613,59.013z"/>
+					  </svg>
+					</a>
+				  <a href="https://facebook.com/groups/258282941572252?multi_permalinks=326213144779231&notif_t=group_activity&notif_id=1536927852622988&ref=m_notif" target="_blank">
+					<svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80.13 80.13" fill="#fff">
+						<path d="M48.355,17.922c3.705,2.323,6.303,6.254,6.776,10.817c1.511,0.706,3.188,1.112,4.966,1.112
+							c6.491,0,11.752-5.261,11.752-11.751c0-6.491-5.261-11.752-11.752-11.752C53.668,6.35,48.453,11.517,48.355,17.922z M40.656,41.984
+							c6.491,0,11.752-5.262,11.752-11.752s-5.262-11.751-11.752-11.751c-6.49,0-11.754,5.262-11.754,11.752S34.166,41.984,40.656,41.984
+							z M45.641,42.785h-9.972c-8.297,0-15.047,6.751-15.047,15.048v12.195l0.031,0.191l0.84,0.263
+							c7.918,2.474,14.797,3.299,20.459,3.299c11.059,0,17.469-3.153,17.864-3.354l0.785-0.397h0.084V57.833
+							C60.688,49.536,53.938,42.785,45.641,42.785z M65.084,30.653h-9.895c-0.107,3.959-1.797,7.524-4.47,10.088
+							c7.375,2.193,12.771,9.032,12.771,17.11v3.758c9.77-0.358,15.4-3.127,15.771-3.313l0.785-0.398h0.084V45.699
+							C80.13,37.403,73.38,30.653,65.084,30.653z M20.035,29.853c2.299,0,4.438-0.671,6.25-1.814c0.576-3.757,2.59-7.04,5.467-9.276
+							c0.012-0.22,0.033-0.438,0.033-0.66c0-6.491-5.262-11.752-11.75-11.752c-6.492,0-11.752,5.261-11.752,11.752
+							C8.283,24.591,13.543,29.853,20.035,29.853z M30.589,40.741c-2.66-2.551-4.344-6.097-4.467-10.032
+							c-0.367-0.027-0.73-0.056-1.104-0.056h-9.971C6.75,30.653,0,37.403,0,45.699v12.197l0.031,0.188l0.84,0.265
+							c6.352,1.983,12.021,2.897,16.945,3.185v-3.683C17.818,49.773,23.212,42.936,30.589,40.741z"/>
+					</svg></a>
+				<a href="https://facebook.com/profile.php?id=238391043443923&ref=content_filter" target="_blank"><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#fff">
+				<svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" >
+				<path d="M476.69,512H35.31C15.89,512,0,496.11,0,476.69V35.31C0,15.89,15.89,0,35.31,0H476.69
+				C496.11,0,512,15.89,512,35.31V476.69C512,496.11,496.11,512,476.69,512"/>
+				<path style="fill:#000;" d="M432.552,88.276v88.276h-79.448c-9.71,0-17.655,7.945-17.655,17.655v52.966h88.276v88.276h-88.276
+				V512h-88.276V335.448h-70.621v-88.276h70.621v-52.966c0-55.614,42.372-101.517,97.103-105.931H432.552z"/>
+				</svg>
+				</a>
+				</div>
+				</div>
+				</div>
+				</div>
+				</div>
+				</div>
+				{% if not device.isMobile() %}
+				<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				<span class="sr-only">Previous</span>
+				</a>
+				<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+				<span class="carousel-control-next-icon" aria-hidden="true"></span>
+				<span class="sr-only">Next</span>
+				</a>
+				{% endif %}
+				</div>
+			</div>
+	<div class="card"id="5" style="background-color: var(--red) ; color: white;">
+    <ul class="faq">
+    <li><span><img src="{{baseUrl}}/resources/img/profile.jpg" width="50"  height="50" class="rounded-circle">Што претставува The Underworld ?</span></li>
+    <li><span><span class="text-left bg-white">The Underworld е веб игра чиjа тематика е мафијата и подзмениот свет. Игра која нуди добра забава , дружење  и награди. Игра во која ќе го симулира реалниот, секојдневен , криминален свет. Игра која често ќе биде надоградувана и подобрувана.</span> <img src="{{baseUrl}}/resources/img/logo4.png" width="50"  height="50" class="rounded-circle even"></span></li>
+    <li><span><img src="{{baseUrl}}/resources/img/profile.jpg" width="50"  height="50" class="rounded-circle">Што е мојата цел во The Underworld?</span></li>
+    <li><span><span class="text-left bg-white">Вашата цел да заработите што повеќе пари, да стекнете што повеќе моќ , да станете повлијателен и почитуван во овој криминален свет , да ги извршите сите дадени мисии . Вашето искуство ќе ве донесе на врвот во овој мафијашки свет.</span> <img src="{{baseUrl}}/resources/img/logo4.png" width="50"  height="50" class="rounded-circle even"></span></li>
+    <li><span><img src="{{baseUrl}}/resources/img/profile.jpg" width="50"  height="50" class="rounded-circle">  Како да заработувам повеќе пари ?</span></li>
+    <li><span><span class="text-left bg-white">Злосторствата, кражбата на автомобили, шверцот на дрога, алкохол, автомобилските трки, трговијата се извори на вашите пари. Парите во овој се свет претставуваат важен сегмент, без нив сте никој и ништо.</span> <img src="{{baseUrl}}/resources/img/logo4.png" width="50"  height="50" class="rounded-circle even"> </span></li>
+    <li><span><img src="{{baseUrl}}/resources/img/profile.jpg" width="50"  height="50" class="rounded-circle">  Како да станам влијателен и помоќен ?</span></li>
+    <li><span><span class="text-left bg-white">Со тоа  што ќе купуваш оружја , опрема за шпионажа, заштита од мафијата се зголемува и твојата влијателност и моќ во овој криминален свет. Колку се помоќен , толку ќе бидеш и повлијателен врз другите мафијаши . Но и да основаш твоја фамилија.</span> <img src="{{baseUrl}}/resources/img/logo4.png" width="50"  height="50" class="rounded-circle even"></span></li>
+    <li><span><img src="{{baseUrl}}/resources/img/profile.jpg" width="50"  height="50" class="rounded-circle">  Како да напаѓам други мафијаши ?</span></li>
+    <li><span><span class="text-left bg-white">Во зависност од вашето искуство, вашата моќ и бројот на платени убијци, вие ќе бидете оспособени да напаѓате други мафијаши , со тоа што твојата трага ќе биде подлабока во овој свет.</span> <img src="{{baseUrl}}/resources/img/logo4.png" width="50"  height="50" class="rounded-circle even"> </span></li>
+    <li><span><img src="{{baseUrl}}/resources/img/profile.jpg" width="50"  height="50" class="rounded-circle">  Кој е условот за да основам фамилија на мафијаши?</span></li>
+    <li><span><span class="text-left bg-white">За да опстане една фамилија е потребно да има моќ , пари
+и искуство. Тоа може да се постигне ако и само имаш доволно
+пријатели-мафијаши кои би те поддржале во основањето на фамилијата. Затоа соработувај со другите мафијаши.</span> <img src="{{baseUrl}}/resources/img/logo4.png" width="50"  height="50" class="rounded-circle even"></span></li>
+    <li><span><img src="{{baseUrl}}/resources/img/profile.jpg" width="50"  height="50" class="rounded-circle"> Колку ранкови постојат ?</span></li>
+    <li><span><span class="text-left bg-white">Постојат 10 ранкови. За секој ранк има свое име . Пример:; 2 ранк е наречен Граѓанин итн..</span> <img src="{{baseUrl}}/resources/img/logo4.png" width="50"  height="50" class="rounded-circle even"></span></li>
+  </ul>
+	</div>
+	   <div class="card"style="background-color: #000 ;color: white;"id="3">
+		<div class="card-body">
+		<div class="card-columns">
+			<div class="card prof">
+			  <img class="card-img-top" src="{{baseUrl}}/resources/img/sidebar.png" height="200px">
+			  <div class="card-img-overlay">
+				<img  src="{{baseUrl}}/resources/img/6.png" width="92" height="92">
+				<div class="name">
+				  Васил Трендафилов<br>
+				  <div class="social">
+				   <a href="{{path_for('admin') }}"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 416.32" fill="#fff">
+					 <path d="M160.83 416.32c193.2 0 298.92-160.22 298.92-298.92 0-4.51 0-9-.2-13.52A214 214 0 0 0 512 49.38a212.93 212.93 0 0 1-60.44 16.6 105.7
+					 105.7 0 0 0 46.3-58.19 209 209 0 0 1-66.79 25.37 105.09 105.09 0 0 0-181.73 71.91 116.12 116.12 0 0 0 2.66 24c-87.28-4.3-164.73-46.3-216.56-109.82A105.48
+					 105.48 0 0 0 68 159.6a106.27 106.27 0 0 1-47.53-13.11v1.43a105.28 105.28 0 0 0 84.21 103.06 105.67 105.67 0 0 1-47.33 1.84 105.06 105.06 0 0 0
+					 98.14 72.94A210.72 210.72 0 0 1 25 370.84a202.17 202.17 0 0 1-25-1.43 298.85 298.85 0 0 0 160.83 46.92"></path>
+				   </svg></a>
+				   <a href="{{path_for('admin') }}"><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"fill="#fff" >
+					 <path d="M363.273,0H148.728C66.719,0,0,66.719,0,148.728v214.544C0,445.281,66.719,512,148.728,512h214.544
+					   C445.281,512,512,445.281,512,363.273V148.728C512,66.719,445.281,0,363.273,0z M472,363.272C472,423.225,423.225,472,363.273,472
+					   H148.728C88.775,472,40,423.225,40,363.273V148.728C40,88.775,88.775,40,148.728,40h214.544C423.225,40,472,88.775,472,148.728
+					   V363.272z"/>
+					 <path d="M256,118c-76.094,0-138,61.906-138,138s61.906,138,138,138s138-61.906,138-138S332.094,118,256,118z M256,354
+					   c-54.037,0-98-43.963-98-98s43.963-98,98-98s98,43.963,98,98S310.037,354,256,354z"/>
+					 <circle cx="396" cy="116" r="20"/>
+				   </svg>
+				   </a>
+				   <a href="{{path_for('admin') }}"><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#fff">
+					 <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" >
+					 <path d="M476.69,512H35.31C15.89,512,0,496.11,0,476.69V35.31C0,15.89,15.89,0,35.31,0H476.69
+					   C496.11,0,512,15.89,512,35.31V476.69C512,496.11,496.11,512,476.69,512"/>
+					 <path style="fill:#000;" d="M432.552,88.276v88.276h-79.448c-9.71,0-17.655,7.945-17.655,17.655v52.966h88.276v88.276h-88.276
+							   V512h-88.276V335.448h-70.621v-88.276h70.621v-52.966c0-55.614,42.372-101.517,97.103-105.931H432.552z"/>
+							 </svg>
+						   </a>
+						 </div>
+						</div>
+					  </div>
+					  <div class="card-body">
+					  Години: 18
+					  <br>
+					  Образование: ССОУ „Коле Неделковски“ Велес/ УКИМ - ФЕИТ
+					  <br>
+					  Прогрмирање:C#, C++, WEB.
+					  <br>
+					  Хоби: Kарти, Шах, YouTube, Startalk.
+					  </div>
+						</div>
+					  <div class="card prof">
+						<img class="card-img-top" src="{{baseUrl}}/resources/img/sidebar.png" height="200px">
+						<div class="card-img-overlay">
+						  <img  src="{{baseUrl}}/resources/img/5.png" width="92" height="92">
+						  <div class="name">
+					Виктор Јовев<br>
+					<div class="social">
+					 <a href="{{path_for('admin') }}"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 416.32" fill="#fff">
+					   <path d="M160.83 416.32c193.2 0 298.92-160.22 298.92-298.92 0-4.51 0-9-.2-13.52A214 214 0 0 0 512 49.38a212.93 212.93 0 0 1-60.44 16.6 105.7
+					   105.7 0 0 0 46.3-58.19 209 209 0 0 1-66.79 25.37 105.09 105.09 0 0 0-181.73 71.91 116.12 116.12 0 0 0 2.66 24c-87.28-4.3-164.73-46.3-216.56-109.82A105.48
+					   105.48 0 0 0 68 159.6a106.27 106.27 0 0 1-47.53-13.11v1.43a105.28 105.28 0 0 0 84.21 103.06 105.67 105.67 0 0 1-47.33 1.84 105.06 105.06 0 0 0
+					   98.14 72.94A210.72 210.72 0 0 1 25 370.84a202.17 202.17 0 0 1-25-1.43 298.85 298.85 0 0 0 160.83 46.92"></path>
+					 </svg></a>
+					 <a href="{{path_for('admin') }}"><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"fill="#fff" >
+					   <path d="M363.273,0H148.728C66.719,0,0,66.719,0,148.728v214.544C0,445.281,66.719,512,148.728,512h214.544
+						 C445.281,512,512,445.281,512,363.273V148.728C512,66.719,445.281,0,363.273,0z M472,363.272C472,423.225,423.225,472,363.273,472
+						 H148.728C88.775,472,40,423.225,40,363.273V148.728C40,88.775,88.775,40,148.728,40h214.544C423.225,40,472,88.775,472,148.728
+						 V363.272z"/>
+					   <path d="M256,118c-76.094,0-138,61.906-138,138s61.906,138,138,138s138-61.906,138-138S332.094,118,256,118z M256,354
+						 c-54.037,0-98-43.963-98-98s43.963-98,98-98s98,43.963,98,98S310.037,354,256,354z"/>
+					   <circle cx="396" cy="116" r="20"/>
+					 </svg>
+					 </a>
+					 <a href="{{path_for('admin') }}"><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#fff">
+					   <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" >
+					   <path d="M476.69,512H35.31C15.89,512,0,496.11,0,476.69V35.31C0,15.89,15.89,0,35.31,0H476.69
+						 C496.11,0,512,15.89,512,35.31V476.69C512,496.11,496.11,512,476.69,512"/>
+					   <path style="fill:#000;" d="M432.552,88.276v88.276h-79.448c-9.71,0-17.655,7.945-17.655,17.655v52.966h88.276v88.276h-88.276
+						 V512h-88.276V335.448h-70.621v-88.276h70.621v-52.966c0-55.614,42.372-101.517,97.103-105.931H432.552z"/>
+					   </svg>
+						 </a>
+					   </div>
+					  </div>
+					</div>
+						<div class="card-body">
+						Години: 18
+						<br>
+						obrazovanie: ССОУ „Коле Неделковски“ Велес/ УКИМ - ФИНКИ
+						<br>
+						Прогрмирање:
+						<br>
+					C/C++ , Delphi, Pascal ,  Алгоритми, податочни структури и нивна примена
+					Word, Excel(Calc), PowerPoint , Access(Base), Visio , Regex
+					<br>
+					Хоби: читање книги , решавање логички задачи , решавање задачи програмирање , математика , пишување блогови , истражување во областа вештачка интелигенција, читање новости за технологија и наука
+						</div>
+					  </div>
+						<div class="card prof">
+					  <img class="card-img-top" src="{{baseUrl}}/resources/img/sidebar.png" height="200px">
+					  <div class="card-img-overlay">
+						<img  src="{{baseUrl}}/resources/img/1.png" width="92" height="92">
+						<div class="name">
+						  Анѓелче Дамчевски<br>
+						  <div class="social">
+					   <a href="{{path_for('admin') }}"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 416.32" fill="#fff">
+						 <path d="M160.83 416.32c193.2 0 298.92-160.22 298.92-298.92 0-4.51 0-9-.2-13.52A214 214 0 0 0 512 49.38a212.93 212.93 0 0 1-60.44 16.6 105.7
+						 105.7 0 0 0 46.3-58.19 209 209 0 0 1-66.79 25.37 105.09 105.09 0 0 0-181.73 71.91 116.12 116.12 0 0 0 2.66 24c-87.28-4.3-164.73-46.3-216.56-109.82A105.48
+						 105.48 0 0 0 68 159.6a106.27 106.27 0 0 1-47.53-13.11v1.43a105.28 105.28 0 0 0 84.21 103.06 105.67 105.67 0 0 1-47.33 1.84 105.06 105.06 0 0 0
+						 98.14 72.94A210.72 210.72 0 0 1 25 370.84a202.17 202.17 0 0 1-25-1.43 298.85 298.85 0 0 0 160.83 46.92"></path>
+					   </svg></a>
+					   <a href="{{path_for('admin') }}"><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"fill="#fff" >
+						 <path d="M363.273,0H148.728C66.719,0,0,66.719,0,148.728v214.544C0,445.281,66.719,512,148.728,512h214.544
+						   C445.281,512,512,445.281,512,363.273V148.728C512,66.719,445.281,0,363.273,0z M472,363.272C472,423.225,423.225,472,363.273,472
+						   H148.728C88.775,472,40,423.225,40,363.273V148.728C40,88.775,88.775,40,148.728,40h214.544C423.225,40,472,88.775,472,148.728
+						   V363.272z"/>
+						 <path d="M256,118c-76.094,0-138,61.906-138,138s61.906,138,138,138s138-61.906,138-138S332.094,118,256,118z M256,354
+						   c-54.037,0-98-43.963-98-98s43.963-98,98-98s98,43.963,98,98S310.037,354,256,354z"/>
+						 <circle cx="396" cy="116" r="20"/>
+					   </svg>
+					   </a>
+					   <a href="{{path_for('admin') }}"><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#fff">
+						 <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" >
+						 <path d="M476.69,512H35.31C15.89,512,0,496.11,0,476.69V35.31C0,15.89,15.89,0,35.31,0H476.69
+						   C496.11,0,512,15.89,512,35.31V476.69C512,496.11,496.11,512,476.69,512"/>
+						 <path style="fill:#000;" d="M432.552,88.276v88.276h-79.448c-9.71,0-17.655,7.945-17.655,17.655v52.966h88.276v88.276h-88.276
+						   V512h-88.276V335.448h-70.621v-88.276h70.621v-52.966c0-55.614,42.372-101.517,97.103-105.931H432.552z"/>
+						 </svg>
+					   </a>
+					 </div>
+					</div>
+				  </div>
+				  <div class="card-body">
+				  Години: 18
+				  <br>
+				  obrazovanie: ССОУ „Коле Неделковски“ Велес/ УКИМ - ФИНКИ
+				  <br>
+				  Прогрмирање:
+					  <br>
+					  C/C++ , Delphi, Pascal ,
+					  Word, Excel(Calc), PowerPoint , Access(Base), HTML, CSS, Wordpress
+					  <br>
+					  Хоби: изработка и дизајн на веб страници, решавање математички проблеми, фотошоп изработки
+					  </div>
+					</div>
+					  <div class="card prof">
+						<img class="card-img-top" src="{{baseUrl}}/resources/img/sidebar.png" height="200px">
+						<div class="card-img-overlay">
+					  <img  src="{{baseUrl}}/resources/img/2.png" width="92" height="92">
+					  <div class="name">
+						Дамјан Димитров<br>
+						<div class="social">
+						 <a href="{{path_for('admin') }}"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 416.32" fill="#fff">
+						   <path d="M160.83 416.32c193.2 0 298.92-160.22 298.92-298.92 0-4.51 0-9-.2-13.52A214 214 0 0 0 512 49.38a212.93 212.93 0 0 1-60.44 16.6 105.7
+						   105.7 0 0 0 46.3-58.19 209 209 0 0 1-66.79 25.37 105.09 105.09 0 0 0-181.73 71.91 116.12 116.12 0 0 0 2.66 24c-87.28-4.3-164.73-46.3-216.56-109.82A105.48
+						   105.48 0 0 0 68 159.6a106.27 106.27 0 0 1-47.53-13.11v1.43a105.28 105.28 0 0 0 84.21 103.06 105.67 105.67 0 0 1-47.33 1.84 105.06 105.06 0 0 0
+						   98.14 72.94A210.72 210.72 0 0 1 25 370.84a202.17 202.17 0 0 1-25-1.43 298.85 298.85 0 0 0 160.83 46.92"></path>
+						 </svg></a>
+						 <a href="{{path_for('admin') }}"><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"fill="#fff" >
+						   <path d="M363.273,0H148.728C66.719,0,0,66.719,0,148.728v214.544C0,445.281,66.719,512,148.728,512h214.544
+							 C445.281,512,512,445.281,512,363.273V148.728C512,66.719,445.281,0,363.273,0z M472,363.272C472,423.225,423.225,472,363.273,472
+							 H148.728C88.775,472,40,423.225,40,363.273V148.728C40,88.775,88.775,40,148.728,40h214.544C423.225,40,472,88.775,472,148.728
+							 V363.272z"/>
+						   <path d="M256,118c-76.094,0-138,61.906-138,138s61.906,138,138,138s138-61.906,138-138S332.094,118,256,118z M256,354
+							 c-54.037,0-98-43.963-98-98s43.963-98,98-98s98,43.963,98,98S310.037,354,256,354z"/>
+						   <circle cx="396" cy="116" r="20"/>
+						 </svg>
+						 </a>
+						 <a href="{{path_for('admin') }}"><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#fff">
+						   <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" >
+						   <path d="M476.69,512H35.31C15.89,512,0,496.11,0,476.69V35.31C0,15.89,15.89,0,35.31,0H476.69
+							 C496.11,0,512,15.89,512,35.31V476.69C512,496.11,496.11,512,476.69,512"/>
+						   <path style="fill:#000;" d="M432.552,88.276v88.276h-79.448c-9.71,0-17.655,7.945-17.655,17.655v52.966h88.276v88.276h-88.276
+							 V512h-88.276V335.448h-70.621v-88.276h70.621v-52.966c0-55.614,42.372-101.517,97.103-105.931H432.552z"/>
+						   </svg>
+						 </a>
+					   </div>
+					  </div>
+					</div>
+					<div class="card-body">
+					Години: 19
+					<br>
+					obrazovanie: СОУ ,,Гимназија Кочо Рацин” Велес / Компјутерски науки, Копер, Словенија
+					<br>
+					Прогрмирање:
+					<br>
+				C++, Java, Python, Алгоритми, податочни структури,  Објектно-Ориентирано програмирање, дизајн на видео игри, Data Entry
+					<br>
+					Хоби: Решавање проблеми во областа на програмирање и математика, креирање концепти и идеи за видео игри, учење и тестирање на различни развивачки околини како и Game Engines
+					</div>
+				  </div>
+					<div class="card prof">
+					  <img class="card-img-top" src="{{baseUrl}}/resources/img/sidebar.png" height="200px">
+					  <div class="card-img-overlay">
+						<img  src="{{baseUrl}}/resources/img/4.png" width="92" height="92">
+						<div class="name">
+						 Бојан Вуцевски<br>
+						  <div class="social">
+						   <a href="{{path_for('admin') }}"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 416.32" fill="#fff">
+							 <path d="M160.83 416.32c193.2 0 298.92-160.22 298.92-298.92 0-4.51 0-9-.2-13.52A214 214 0 0 0 512 49.38a212.93 212.93 0 0 1-60.44 16.6 105.7
+							 105.7 0 0 0 46.3-58.19 209 209 0 0 1-66.79 25.37 105.09 105.09 0 0 0-181.73 71.91 116.12 116.12 0 0 0 2.66 24c-87.28-4.3-164.73-46.3-216.56-109.82A105.48
+							 105.48 0 0 0 68 159.6a106.27 106.27 0 0 1-47.53-13.11v1.43a105.28 105.28 0 0 0 84.21 103.06 105.67 105.67 0 0 1-47.33 1.84 105.06 105.06 0 0 0
+							 98.14 72.94A210.72 210.72 0 0 1 25 370.84a202.17 202.17 0 0 1-25-1.43 298.85 298.85 0 0 0 160.83 46.92"></path>
+						   </svg></a>
+						   <a href="{{path_for('admin') }}"><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"fill="#fff" >
+							 <path d="M363.273,0H148.728C66.719,0,0,66.719,0,148.728v214.544C0,445.281,66.719,512,148.728,512h214.544
+							   C445.281,512,512,445.281,512,363.273V148.728C512,66.719,445.281,0,363.273,0z M472,363.272C472,423.225,423.225,472,363.273,472
+							   H148.728C88.775,472,40,423.225,40,363.273V148.728C40,88.775,88.775,40,148.728,40h214.544C423.225,40,472,88.775,472,148.728
+							   V363.272z"/>
+							 <path d="M256,118c-76.094,0-138,61.906-138,138s61.906,138,138,138s138-61.906,138-138S332.094,118,256,118z M256,354
+							   c-54.037,0-98-43.963-98-98s43.963-98,98-98s98,43.963,98,98S310.037,354,256,354z"/>
+							 <circle cx="396" cy="116" r="20"/>
+						   </svg>
+						   </a>
+						   <a href="{{path_for('admin') }}"><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#fff">
+							 <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" >
+							 <path d="M476.69,512H35.31C15.89,512,0,496.11,0,476.69V35.31C0,15.89,15.89,0,35.31,0H476.69
+							   C496.11,0,512,15.89,512,35.31V476.69C512,496.11,496.11,512,476.69,512"/>
+							 <path style="fill:#000;" d="M432.552,88.276v88.276h-79.448c-9.71,0-17.655,7.945-17.655,17.655v52.966h88.276v88.276h-88.276
+							   V512h-88.276V335.448h-70.621v-88.276h70.621v-52.966c0-55.614,42.372-101.517,97.103-105.931H432.552z"/>
+							 </svg>
+						   </a>
+						 </div>
+						</div>
+					  </div>
+					  <div class="card-body">
+					  Години: 18
+					  <br>
+					  obrazovanie:СОУ ,,Гимназија Кочо Рацин”  / /
+					  <br>
+					  Прогрмирање:
+					  <br>
+					 /
+					  <br>
+					  Хоби: /
+					  </div>
+					</div>
+					  <div class="card prof">
+						<img class="card-img-top" src="{{baseUrl}}/resources/img/sidebar.png" height="200px">
+						<div class="card-img-overlay">
+						  <img  src="{{baseUrl}}/resources/img/3.png" width="92" height="92">
+						  <div class="name">
+							Дејвид Угриновски<br>
+							<div class="social">
+							 <a href="{{path_for('admin') }}"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 416.32" fill="#fff">
+							   <path d="M160.83 416.32c193.2 0 298.92-160.22 298.92-298.92 0-4.51 0-9-.2-13.52A214 214 0 0 0 512 49.38a212.93 212.93 0 0 1-60.44 16.6 105.7
+							   105.7 0 0 0 46.3-58.19 209 209 0 0 1-66.79 25.37 105.09 105.09 0 0 0-181.73 71.91 116.12 116.12 0 0 0 2.66 24c-87.28-4.3-164.73-46.3-216.56-109.82A105.48
+							   105.48 0 0 0 68 159.6a106.27 106.27 0 0 1-47.53-13.11v1.43a105.28 105.28 0 0 0 84.21 103.06 105.67 105.67 0 0 1-47.33 1.84 105.06 105.06 0 0 0
+							   98.14 72.94A210.72 210.72 0 0 1 25 370.84a202.17 202.17 0 0 1-25-1.43 298.85 298.85 0 0 0 160.83 46.92"></path>
+							 </svg></a>
+							 <a href="{{path_for('admin') }}"><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"fill="#fff" >
+							   <path d="M363.273,0H148.728C66.719,0,0,66.719,0,148.728v214.544C0,445.281,66.719,512,148.728,512h214.544
+								 C445.281,512,512,445.281,512,363.273V148.728C512,66.719,445.281,0,363.273,0z M472,363.272C472,423.225,423.225,472,363.273,472
+								 H148.728C88.775,472,40,423.225,40,363.273V148.728C40,88.775,88.775,40,148.728,40h214.544C423.225,40,472,88.775,472,148.728
+								 V363.272z"/>
+							   <path d="M256,118c-76.094,0-138,61.906-138,138s61.906,138,138,138s138-61.906,138-138S332.094,118,256,118z M256,354
+								 c-54.037,0-98-43.963-98-98s43.963-98,98-98s98,43.963,98,98S310.037,354,256,354z"/>
+							   <circle cx="396" cy="116" r="20"/>
+							 </svg>
+							 </a>
+							 <a href="{{path_for('admin') }}"><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#fff">
+							   <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" >
+							   <path d="M476.69,512H35.31C15.89,512,0,496.11,0,476.69V35.31C0,15.89,15.89,0,35.31,0H476.69
+								 C496.11,0,512,15.89,512,35.31V476.69C512,496.11,496.11,512,476.69,512"/>
+							   <path style="fill:#000;" d="M432.552,88.276v88.276h-79.448c-9.71,0-17.655,7.945-17.655,17.655v52.966h88.276v88.276h-88.276
+								 V512h-88.276V335.448h-70.621v-88.276h70.621v-52.966c0-55.614,42.372-101.517,97.103-105.931H432.552z"/>
+							   </svg>
+							 </a>
+						   </div>
+						  </div>
+						</div>
+						<div class="card-body">
+						Години: 18
+						<br>
+						Образование: ССОУ „Коле Неделковски“ Велес/Компјутерски науки, Копер, Словенија
+						<br>
+						Прогрмирање:
+						<br>
+					/
+						<br>
+						Хоби: /
+						</div>
+					  </div>
+					</div>
+					</div>
+		</div>
+	<div class="card" id="1" style="background-color: var(--red) ;color: white;">
+		<div class="accordion" id="accordionExample1">
+			  <div class="card shadow">
+				<div class="card-header">
+				<h4 class="mb-0">
+				<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#osnovnipravila" aria-expanded="true" aria-controls="collapseOne">
+				Основни правила
+				</button></h4></div>
+				<div id="osnovnipravila" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample1">
+				  <div class="card-body">
+				  1.Долyнаведените правила важат само кога си корисник на TheUnderWorld.
+				  <br>
+				  2. Забрането е изразување на било каква форма на дискриминација, омраза и навреди помеѓу играчите. Прекршувањето на ова правило ќе резултира со банирање.Ваквите прекршоци можеш да ги пријавиш кај некој од модераторите.
+				  <br>
+				  3. Лажењето и спамирањето е строго забрането. Доколку забележиш некој сомнителен играч ти препорачуваме да ги известиш модераторите.
+				  <br>
+				  4. За пријавување на некој што лаже можеш да бидеш награден, но и не мора да значи.
+				  <br>
+				  5. Развивањето на секој играч во играта е под надзор од модераторите.
+				  </div>
+				</div>
+			  </div>
+			 <div class="card shadow">
+			   <div class="card-header" id="headingTwo">
+				 <h5 class="mb-0">
+				   <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#izmami" aria-expanded="false" aria-controls="collapseTwo">
+					 Таен лик
+				   </button>
+				 </h5>
+			   </div>
+			   <div id="izmami" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample1">
+				 <div class="card-body">
+				  1. Можеш да го промовираш твојот таен линк на многу начини како што се: споделување на разни форуми, социјални мрежи (Facebook, Twitter...) и било каква друга размена на дигитални податоци.
+			  <br>
+			  2. Забрането е користење на било какви програми за кликање на тајните линкови. Со прекршување на ова правило вашиот акаунт ќе биде веднаш избришан.
+				 </div>
+			   </div>
+			 </div>
+			 <div class="card shadow">
+			   <div class="card-header" id="headingThree">
+				 <h5 class="mb-0">
+				   <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#izmama" aria-expanded="false" aria-controls="collapseThree">
+					 Измама
+				   </button>
+				 </h5>
+			   </div>
+			   <div id="izmama" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample1">
+				 <div class="card-body">
+				1. Измамата е строго забранета. Не се признаваат никакви изговори, ние очигледно нема да ти поверуваме. Доколку пронајдеш грешка(баг) во играта и ги користиш бенефициите од истата ќе бидеш третиран како измамник. Затоа доколку забележиш било каков пропуст во играта известете некој од модераторите.
+			  <br>
+			  2. Доколку лажеш ќе бидеш казнет. Во најдобар случај казната ќе биде 48 часовен притвор, а во најлош и да бидеш баниран . Во врска со ова правило нема да има никакви исклучоци.
+				 </div>
+			   </div>
+		   </div>
+			 <div class="card shadow">
+			   <div class="card-header" id="headingFour">
+				 <h5 class="mb-0">
+				   <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#timuw" aria-expanded="false" aria-controls="collapseTwo">
+					 Тим на TheUnderWorld
+				   </button>
+				 </h5>
+			   </div>
+			   <div id="timuw" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample1">
+				 <div class="card-body">
+				  1. Тимот на TheUnderWorld има право да ја променува или избриши твојата корисничка сметка.
+			  <br>
+			  2. Тимот на TheUnderWorld има право за било какви промени во играта и на никој начин не одговара пред никого за нив.
+			  <br>
+			  3. Тимот на TheUnderWorld секогаш ќе прави подобрувања во играта со цел поквалитетна и по фер игра помеѓу играчите. Но сепак запамти, ние не сме вештачка интелигенција , па затоа ќе треба време.
+				 </div>
+			   </div>
+			 </div>
+			<div class="card shadow">
+			   <div class="card-header" id="headingFive">
+				 <h5 class="mb-0">
+				   <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#koris" aria-expanded="false" aria-controls="collapseTwo">
+					 Корисници
+				   </button>
+				 </h5>
+			   </div>
+			   <div id="koris" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample1">
+				 <div class="card-body">
+			   1. Корисничките сметки можат слободно да бидат продавани помеѓу играчите, се разбира со претходно известување на модератори!
+			  <br>
+			  2. Поседувањето на повеќе кориснички сметки не е дозволено. Доколку пристапот кон ТheUnderWorld ти е од јавен компјутер (работа, интернет кафе, училиште) или пак домашен компјутер каде што игра и некој друг член од вашата фамилија, препорачливо е да ги известите модераторите. Во спротивно твојата корисничка сметка можи да биде избришана без никакво предупредување.
+			  <br>
+			  3. Корисничка сметка која е банирана нема да биде вратена под никакви услови. Затоа ирај чесно и поштено.
+				 </div>
+			   </div>
+			 </div>
+			 <div class="card shadow">
+			   <div class="card-header" id="headingSix">
+				 <h5 class="mb-0">
+				   <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#bezb" aria-expanded="false" aria-controls="collapseTwo">
+					 Безбедност
+				   </button>
+				 </h5>
+			   </div>
+			   <div id="bezb" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample1">
+				 <div class="card-body">
+			   1. И покрај нашата добра заштита , препорачливо е твојата лозинка да користи разни симболи, бројки, мали/големи букви за да не дојде до пробивање на корисничката сметка.
+			  <br>
+			  2. Ние никогаш нема да ти пратиме порака каде што ти ја бараме твојата лозинка или пак други лични податоци.
+			  <br>
+			  3. Ние никогаш нема да побараме од тебе инсталирање на дополнителен софтвер за пристап кон играта.
+			  <br>
+			  4. Доколку забележиш прекршување на некое од горенаведените правила слободно пријави го случајот кај модераторите.
+			  <br>
+			  Ако имаш некакви прашања или проблеми можеш да се поврзеш со нас за да ти помогнеме.
+				 </div>
+			   </div>
+			 </div>
+		</div>
+	</div>
+
+<div class="card last" style="background-color:#000 ;color: white;"id="2">
+	<div class="accordion" id="accordionExample">
+	  <div class="card">
+		<div class="card-header">
+		<h4 class="mb-0">
+		<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#osnovnipravila2" aria-expanded="true" aria-controls="collapseOne">
+		Приватна полиса
+		</button></h4></div>
+		<div id="osnovnipravila2" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+		  <div class="card-body">
+		  Последнa промена : Август 23, 2018<br>
+			The UnderWorld ("нас", "ние", или "наш/е/а/и") го поседува доменот www. theunderworld.mk   што претставува веб- игра базирана на текст.<br>
+			Ние ги собираме  податоци на корисниците за подобрување на играта. Со самото регистрирање на корисникот ,  веќе  ги прифатил правилата и условите за користење на неговите податоци.<br>
+			Доколку има нешто што не е објавено во Приватната полиса, корисникот може да побара во Правила и Услови на играта на страницата www.theunderworld.mk/[soon]
+		  </div>
+		</div>
+	  </div>
+	 <div class="card">
+	   <div class="card-header" id="headingTwo">
+		 <h5 class="mb-0">
+		   <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#izmami2" aria-expanded="false" aria-controls="collapseTwo">
+			 Собирање информации
+		   </button>
+		 </h5>
+	   </div>
+	   <div id="izmami2" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+		 <div class="card-body">
+			Собираме различни типови на податоци и информации  сѐ со цел да се овозможи подобра игра на корисникот.<br>
+			Типови на собирање податоци<br>
+			Лични податоци.<br>
+			Email адреса<br>
+				 При регистрирање на корисникот , внесува задожително Email адреса  за повеќе цели (награди , прашања , предлози , пријавување грешки, измами во играта и.т.н)
+			Тимот на Тhe UnderWorld никогаш нема да ги искористи овој податок како лична цел.   <br>
+
+			Колачиња,  Usage data<br>
+			Usage Data<br>
+			Usage Data ги вклучува  информациите  како  Интернет Протокол адреса (IP адреса), тип на прелистувач, верзија на прелистувачот, категориите кои ги посетувал(корисникот) на www.theunderworld.mk, времето и датумот на посетата, времето потрошено на играта, и други дијагностички и статистички податоци.
+			Колачиња<br>
+			Колачињата се мали датотеки по меморија кои содржат анонимен единствен идентификатор. Колачињата се „испратени“  до корисничкиот прелистувач од страната (www.theunderworld.mk) и зачувани во корисничкиот уред.
+			Корисникот може да ги одбие сите колачиња или неколку. Но, ако ги одбие колачињата, некои делови од играта можеби нема правилно да функционираат.
+
+		 </div>
+	   </div>
+	 </div>
+	 <div class="card">
+	   <div class="card-header" id="headingThree">
+		 <h5 class="mb-0">
+		   <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#izmama2" aria-expanded="false" aria-controls="collapseThree">
+			 Заштита на податоците
+		   </button>
+		 </h5>
+	   </div>
+	   <div id="izmama2" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+		 <div class="card-body">
+			Заштитата на податоците е еден од најбитните фактори во играта, но никогаш не може да биде 100% заштитени податоци. Секогаш тимот на TheUnderWorld ќе се стреми на подобра заштита.
+		 </div>
+	   </div>
+   </div>
+	 <div class="card">
+	   <div class="card-header" id="headingFour">
+		 <h5 class="mb-0">
+		   <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#timuw2" aria-expanded="false" aria-controls="collapseTwo">
+			 Други линкови
+		   </button>
+		 </h5>
+	   </div>
+	   <div id="timuw2" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+		 <div class="card-body">
+			Корисникот може да добие други линкови од други сајтови/ страни . Тимот на The UnderWorld нема никаква одговорност за ваква содржина , приватни полиси или било какви сервиси и стајови кои не се дел од играта.  Препорачливо е пред да се посети било каков линк да се прочита приватната полиса на The UnderWorld.
+		 </div>
+	   </div>
+	 </div>
+	<div class="card">
+	   <div class="card-header" id="headingFive">
+		 <h5 class="mb-0">
+		   <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#koris2" aria-expanded="false" aria-controls="collapseTwo">
+			 Родителска опција
+		   </button>
+		 </h5>
+	   </div>
+	   <div id="koris2" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+		 <div class="card-body">
+			www.theunderworld.mk не собира податоци за возраста на корисникот. Но препорачливо е корисникот да има 16+ години . Доколку сте родител или старател и сте загрижени за корисникот (дете/деца) за тоа што доставил лични податоци во играта, ве молиме контактирајте нѐ. Доколку тимот на The UnderWorld добиле лични информации на корисник (дете/деца) без родителска потврда, имаме право тие информации да ги избришиме од нашата база на податоци.
+		 </div>
+	   </div>
+	 </div>
+	 <div class="card">
+	   <div class="card-header" id="headingSix">
+		 <h5 class="mb-0">
+		   <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#bezb2" aria-expanded="false" aria-controls="collapseTwo">
+			 Друго
+		   </button>
+		 </h5>
+	   </div>
+	   <div id="bezb2" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+		 <div class="card-body">
+			Често ќе се случува Приватната полиса да претрпи промени/измени во текот на годината.<br>
+			Корисникот ќе биде навреме известен преку играта и преку неговата email адреса.<br>
+			Доколку имате прашање за Приватната полиса , ве молиме контактирајте нѐ.
+		 </div>
+	   </div>
+	 </div>
+</div>
+</div>
+  <footer style="background-color:#000;">
+   <h6 class="text-center p-1 mb-0">Copyright (c) 2018 The Underworld All Rights Reserved</h6>
+  </footer>
+<script type="text/javascript">
+function popup (){
+  $('.popup').fadeIn("slow");
+}
+$(function(){
+	if(isMobile){
+		$('.popup').css('height',$('#mainimg').outerHeight(true)+'px');
+    popup();
+	}else{
+		$('.popup').css('height',$('video').outerHeight(true)+'px');
+	}
+  $('.scroll_to').click(function(e){
+    var jump = $(this).attr('href');
+    var new_position = $(jump).offset();
+    $('html, body').stop().animate({ scrollTop: (new_position.top - 60) }, 500);
+    e.preventDefault();
+  });
+});
+</script>
+
+{% endif %}
+  <script type="text/javascript" src="{{baseUrl}}/resources/js/home.js"></script>
+{% endblock %}

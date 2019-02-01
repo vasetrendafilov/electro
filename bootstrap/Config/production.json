@@ -1,0 +1,33 @@
+{
+  "app":{
+    "baseUrl" : "http://opimusnewsfresh.com/",
+    "recaptcha":"6LeVuSoUAAAAACG7LW0ii_PAQBpM9yokuqFC6PdX",
+    "hash":{
+      "algo": "PASSWORD_BCRYPT",
+      "cost": 10
+    }
+  },
+  "db":{
+    "driver":"mysql",
+    "host":"sql103.con.mk",
+    "database":"mkd_18989075_vase",
+    "username":"mkd_18989075",
+    "password":"joker11",
+    "collation":"utf8_unicode_ci",
+    "charset":"utf8",
+    "prefix":""
+  },
+  "mail":{
+    "smtp_debug": 2,
+    "host": "smtp.gmail.com",
+    "smtp_auth": true,
+    "username": "theuw.mk@gmail.com",
+    "password": "Underworld123",
+    "smtp_secure": "tls",
+    "port": 587
+  },
+  "auth":{
+   "session": "user_id",
+   "remember": "user_r"
+  }
+}

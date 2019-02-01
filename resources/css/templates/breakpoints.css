@@ -1,0 +1,65 @@
+@media (min-width: 320px) {
+  .container-fluid .card-columns .card-body .row{
+    margin-left: 0px;
+  }
+  .container-fluid .card-columns .card-body .row.carCards{
+    margin-left: -8px;
+  }
+}
+@media (min-width: 375px) {
+  .container-fluid .card-columns .card-body .row{
+    margin-left: 15px;
+  }
+  .container-fluid .card-columns .card-body .row.carCards{
+    margin-left: 5px;
+  }
+}
+@media (min-width: 425px) {
+  .container-fluid .card-columns .card-body .row{
+    margin-left: 30px;
+  }
+  .container-fluid .card-columns .card-body .row.carCards{
+    margin-left: 10px;
+  }
+}
+@media (min-width: 576px) {
+  .container-fluid .card-columns{
+    column-count:2;
+  }
+}
+@media (min-width: 768px) {
+  .container-fluid .card-columns .card-body .row{
+    margin-left: 20px;
+  }
+  .container-fluid .card-columns{
+    column-count:2;
+  }
+}
+@media (min-width: 1024px) {
+  .container-fluid .card-columns .card-body .row{
+    margin-left: 20px;
+  }
+  .container-fluid .card-columns .card-body .row.carCards{
+    margin-left: -10px;
+  }
+  .chat .search{
+    bottom: 55px;
+  }
+  .chat .content{
+    bottom: 90px;
+  }
+}
+@media (min-width: 1200px) {
+  .container-fluid .card-columns .card-body .row{
+    margin-left: -10px;
+  }
+  .container-fluid .card-columns{
+    column-count:3;
+  }
+  .container-fluid .card-columns.carCards{
+    column-count:2;
+  }
+  .container-fluid .card-columns .card-body .row.carCards{
+    margin-left: 17px;
+  }
+}

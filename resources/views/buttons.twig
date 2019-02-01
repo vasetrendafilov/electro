@@ -1,0 +1,265 @@
+<script type="text/javascript">
+$(document).ready(function(){
+  $(document).on("click", ".travel", function() {
+    $("#loading").html(travel).fadeIn(1);
+    var place = $(this).siblings('input').val();
+     $.get("{{path_for('travel')}}",{place:place},function(data){
+        $('#container').children('.container').html(data);
+        temp = data;
+        time = $('#container').children('.container').children('input').val();
+        if(time == 1 || time ==="" || time == null){
+          $("#loading").fadeOut("slow");
+        }else{
+          countdown(new Date(new Date().getTime() + (time*1000)));
+          $.get("{{path_for('ajax.travel')}}",function(data){
+              $('#container').html(data);
+              $('#container').children('.container').html(temp);
+              $('[data-toggle="popover"]').popover();
+              refreshStats();
+              $(window).scrollTop(0);
+          });
+        }
+     });
+  });
+  $('#container').on('click','.rabota',function(){
+      $("#loading").html(rabota).fadeIn(1);
+      $('#loading .loading h1').css('top',$('#loading .loading').position().bottom + 10);
+      var id = $(this).parents('.card-body').children('input').val();
+       $.get("{{path_for('rabota')}}",{id:id},function(data){
+          $('#container').children('.container').html(data);
+          time = $('#container').children('.container').children('input').val();
+          if(time == 1){
+            $("#loading").fadeOut("slow");
+          }else{
+            countdown(new Date(new Date().getTime() + (time*1000)));
+          }
+          refreshStats();
+          $(window).scrollTop(0);
+       });
+      });
+  $('#container').on('click','.crime',function(){
+    $("#loading").html(crime).fadeIn(1);
+    var id = $(this).parents('.card-body').children('input').val();
+    $.get("{{path_for('crime')}}",{id:id},function(data){
+      $('#container').children('.container').html(data);
+      time = $('#container').children('.container').children('input').first().val();
+      time2 = $('#container').children('.container').children('input').last().val();
+      if(time == 1 || time ==="" || time == null){
+        $("#loading").fadeOut("slow");
+      }else{
+        countdown(new Date(new Date().getTime() + (time*1000)));
+        jail(time,time2);
+      }
+      refreshStats();
+      $(window).scrollTop(0);
+    });
+  });
+  $('#container').on('click','.drink_drug',function(){
+    var obj = $(this).parents('.card-body').children('.row').children('.col').children('.slider');
+    var id = $(this).parents('.card-body').children('input').first().val();
+    var operation = $(this).parents('.card-body').children('input').last().val();
+    var kolicina = $(this).parents('.card-body').children('.row').children('.col').children('.result').val();
+    $.get("{{path_for('drinks-drugs')}}",{id:id,kolicina:kolicina,operation:operation},function(data){
+      $('#container').children('.container').html(data);
+      if(obj.hasClass('reverse')){
+        obj.attr('max',(obj.attr('max') - obj.val()));
+        obj.val(0);
+        obj.siblings('.result').val(0);
+      }else{ obj.attr('min',obj.val()); }
+      refreshStats();
+      $(window).scrollTop(0);
+    });
+  });
+  $('#container').on('click','.hospital',function(){
+      var kolicina = $(this).parents('.card-body').children('.row').children('.col').children('.result').val();
+       $.get("{{path_for('hospital')}}",{kolicina:kolicina},function(data){
+          $('#container').children('.container').html(data);
+          $('#container .card .btn').children('span').text(' ');
+          $('.slider').attr('min',$('.slider').val());
+          refreshStats();
+          $(window).scrollTop(0);
+       });
+      });
+  $('#container').on('click','.planed',function(){
+      var hitmen = $(this).parents('.card-body').children('.row').children('.col').children('.hitmen').val();
+      var sofer = $(this).parents('.card-body').children('.row').children('.col').children('.sofer').val();
+      var pari = $(this).parents('.card-body').children('.row').children('.col').children('.result').val();
+        $.get("{{path_for('planed_crime')}}",{hitmen:hitmen,sofer:sofer,pari:pari},function(data){
+          refreshStats();
+          $('#container').children('.container').html(data);
+          $(window).scrollTop(0);
+        });
+      });
+  $('#container').on('click','.planed_acept',function(){
+      var id = $(this).parents('.expand').children('input').val();
+      var pick = $(this).children('input').val();
+        $.get("{{path_for('planed_acept')}}",{id:id,pick:pick},function(data){
+          refreshStats();
+          $('#container').children('.container').html(data);
+          $('.expand').fadeOut();
+          $(window).scrollTop(0);
+        });
+      });
+  $('#container').on('click','.planed_start',function(){
+      $("#loading").html(crime).fadeIn(1);
+      var id = $(this).children('input').val();
+      $.get("{{path_for('planed_start')}}",{id:id},function(data){
+        $('#container').children('.container').html(data);
+        time = $('#container').children('.container').children('input').first().val();
+        time2 = $('#container').children('.container').children('input').last().val();
+        if(time == 1 || time ==="" || time == null){
+          $("#loading").fadeOut("slow");
+        }else{
+          countdown(new Date(new Date().getTime() + (time*1000)));
+          jail(time,time2);
+            refreshStats();
+            $(window).scrollTop(0);
+        }
+      });
+      });
+  $('#container').on('click','.leave',function(){
+      var id = $(this).children('input').val();
+       $.get("{{path_for('leave.clan')}}",{id:id},function(data){
+         temp = data;
+          $.get("{{path_for('ajax.clan')}}",function(data){
+            $('#container').html(data);
+            $('#container').children('.container').html(temp);
+            $(window).scrollTop(0);
+          });
+       });
+      });
+  $('#container').on('click','.clanRemove',function(){
+   $.get("{{path_for('remove.clan')}}",function(data){
+     temp = data;
+      $.get("{{path_for('ajax.clan')}}",function(data){
+        $('#container').html(data);
+        $('#container').children('.container').html(temp);
+        $(window).scrollTop(0);
+      });
+   });
+  });
+  $('#container').on('click','.moto',function(){
+    var moto = $(this).siblings('#moto').val();
+    $.get("{{path_for('moto.clan')}}",{moto:moto});
+  });
+  $('#container').on('click','.block',function(){
+    var id = $(this).parents('.btn-group').children('input').val();
+     $.get("{{path_for('block.friend')}}",{id:id},function(data){
+        $('#container').children('.container').html(data);
+        refreshChatTiles();
+        $(window).scrollTop(0);
+     });
+  });
+  $('#container').on('click','.blProf',function(){
+      var type = $(this).children('input').val();
+      $.get("{{path_for('profilePeople')}}",{type:type},function(data){
+          $('#container').html(data);
+          $(window).scrollTop(0);
+      });
+  });
+  $('#container').on('click','.unblock',function(){
+      var id = $(this).parents('.btn-group').children('input').val();
+       $.get("{{path_for('unblock.friend')}}",{id:id},function(data){
+         temp = data;
+          $.get("{{path_for('ajax.blacklist')}}",function(data){
+            $('#container').html(data);
+            $('#container').children('.container').html(temp);
+            $(window).scrollTop(0);
+       });
+      });
+  });
+  $('#container').on('click','.atack',function(){
+      var id = $(this).parents('.btn-group').children('input').val();
+       $.get("{{path_for('atack')}}",{id:id},function(data){
+          $('#container').children('.container').html(data);
+          sila = $('#container').children('.container').children('input').first().val();
+          $('#sila').text(sila);
+       });
+      });
+  $('#container').on('click','.pocit',function(){
+      var id = $(this).parents('.btn-group').children('input').val();
+       $.get("{{path_for('pocit')}}",{id:id},function(data){
+          $('#container').children('.container').html(data);
+       });
+      });
+  $('#container').on('click','.car',function(){
+      $("#loading").html(car).fadeIn(1);
+      var id = $(this).parents('.card-body').children('input').val();
+       $.get("{{path_for('car')}}",{id:id},function(data){
+           refreshStats();
+             $(window).scrollTop(0);
+          $('#container').children('.container').html(data);
+          time = $('#container').children('.container').children('input').first().val();
+          time2 = $('#container').children('.container').children('input').last().val();
+          if(time == 1){
+            $("#loading").fadeOut("slow");
+          }else{
+             countdown(new Date(new Date().getTime() + (time*1000)));
+             jail(time,time2);
+          }
+       });
+      });
+  $('#container').on('click','.race',function(){
+      $("#loading").html(car).fadeIn(1);
+      var id = $(this).parents('.card-body').children('input').val();
+       $.get("{{path_for('race')}}",{id:id},function(data){
+           refreshStats();
+             $(window).scrollTop(0);
+          $('#container').children('.container').html(data);
+          time = $('#container').children('.container').children('input').first().val();
+          time2 = $('#container').children('.container').children('input').last().val();
+          if(time == 1){
+            $("#loading").fadeOut("slow");
+          }else{
+             countdown(new Date(new Date().getTime() + (time*1000)));
+             jail(time,time2);
+          }
+       });
+      });
+  $('#container').on('click','.bank',function(){
+      var kolicina = $(this).parents('.card-body').children('.row').children('.col').children('.result').val();
+      var name = $(this).siblings('input').val();
+       $.get("{{path_for('bank')}}",{name:name,kolicina:kolicina},function(data){
+          refreshStats();
+          $(window).scrollTop(0);
+          $('#container').children('.container').html(data);
+       });
+      });
+  $('#container').on('click','.shop',function(){
+    var obj = $(this);
+    var id = $(this).parents('.card-body').children('input').last().val();
+    var kolicina = $(this).parents('.card-body').children('.row').children('.col').children('.result').val();
+    $.get("{{path_for('shop')}}",{id:id,kolicina:kolicina},function(data){
+      $('#container').children('.container').html(data);
+      if(!kolicina &&  $('#container').children('.container').children('input').val() == 1){
+        obj.parents('.card').fadeOut();
+      }else{
+        obj.parents('.card-body').children('.row').children('.col').children('.slider').attr('min',obj.parents('.card-body').children('.row').children('.col').children('.slider').val());
+      }
+      refreshStats();
+      $(window).scrollTop(0);
+    });
+  });
+  $('#container').on('click','.sellcar',function(){
+    $(this).parents('.card').slideUp();
+      $(window).scrollTop(0);
+    var id = $(this).parents('.card-body').children('input').val();
+    $.get("{{path_for('sellcar')}}",{id:id},function(data){
+         refreshStats();
+        $('#container').children('.container').html(data);
+     });
+    });
+  $('#container').on('click','.clan',function(){
+    var name = $(this).parents('.card-body').children('.form-group').children('input').val();
+    var moto = $(this).parents('.card-body').children('.form-group').children('textarea').val();
+    $.get("{{path_for('clan')}}",{name:name,moto:moto},function(data){
+        temp = data;
+         $.get("{{path_for('ajax.clan')}}",function(data){
+           $('#container').html(data);
+           $('#container').children('.container').html(temp);
+           $(window).scrollTop(0);
+         });
+     });
+    });
+});
+</script>

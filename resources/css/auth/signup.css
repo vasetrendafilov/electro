@@ -1,0 +1,22 @@
+.btn{
+  margin-top: 10px;
+  margin-bottom: 50px;
+}
+.btn:disabled {
+  background-color: var(--gray-dark);
+  border-color: var(--gray-dark);
+  opacity: 1;
+}
+.is-valid{
+  border-width: 1.5px;
+}
+.is-invalid{
+  border-width: 1.5px;
+}
+.second{
+  margin-top: 45px;
+}
+@media (max-width: 425px) {
+  .second{
+    margin-top: 0px;
+  }

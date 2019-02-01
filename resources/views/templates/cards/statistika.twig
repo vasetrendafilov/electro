@@ -1,0 +1,121 @@
+<style media="screen">
+.container-fluid{
+  padding-top: 120px;
+}
+.card-columns{
+  column-count:1!important;
+}
+.input-group .btn-group .btn.btn-danger{
+  border-radius: 0;
+  border-top-right-radius: 0.25rem!important;
+  border-bottom-right-radius: 0.25rem!important;
+  width:42px!important;
+}
+.btn.btn-dark.dropdown-toggle{
+  display: none;
+}
+</style>
+<div class="card-navigation">
+  <ul class="nav nav-fill">
+    <li class="nav-item" id="1">
+      <a class="nav-link">ИГРАЧИ</a>
+    </li>
+    <li class="nav-item" id="2">
+      <a class="nav-link">ФАМИЛИИ</a>
+    </li>
+  </ul>
+</div>
+<div class="card-columns" id="first">
+  <div class="card" id="card-search">
+    <div id="form"></div>
+  </div>
+  <div class="card">
+  <table class="table" id="igraci" data-paging="true" data-paging-size="10" data-sorting="true" data-filtering="true">
+	<thead class="thead-dark">
+		<tr>
+			<th data-breakpoints="xs" data-type="number">ID</th>
+			<th>ИМЕ</th>
+			<th data-type="number">ПАРИ</th>
+			<th data-breakpoints="xs" data-type="number">МОЌ</th>
+			<th data-breakpoints="xs sm" data-type="number">ПОЧИТ</th>
+			<th data-breakpoints="xs sm md" data-type="number">УБИСТВА</th>
+      <th data-breakpoints="xs sm md lg" data-type="number">ПОБЕДИ</th>
+      <th data-breakpoints="xs sm md lg" data-type="number">ЗАГУБИ</th>
+		</tr>
+	</thead>
+	<tbody>
+    {% for key, row in rows %}
+  		<tr>
+  			<td>{{row.user_id}}</td>
+  			<td>  <img src="{{auth.user.get_gravatar(auth.user.getEmail(row.user_id),40)}}" width="40" height="40" style="border-radius:50%;"> {{auth.user.getName(row.user_id)}}</td>
+  			<td>{{row.pari}}$</td>
+  			<td>{{row.mok}}</td>
+  			<td>{{row.pocit}}</td>
+  			<td>{{row.ubistva}}</td>
+      	<td>{{row.atack_wins}}</td>
+      	<td>{{row.atack_loses}}</td>
+  		</tr>
+    {% endfor %}
+	</tbody>
+</table>
+</div>
+</div>
+<div class="card-columns" id="second" style="display:none">
+  <div class="card" id="clan-search">
+    <div id="formclan"></div>
+  </div>
+  <div class="card">
+    <table class="table" id="clans" data-paging="true" data-paging-size="10" data-sorting="true" data-filtering="true">
+  	<thead class="thead-dark">
+  		<tr>
+  			<th data-breakpoints="xs" data-type="number">ID</th>
+  			<th>ИМЕ</th>
+  			<th data-type="number">ПАРИ</th>
+  			<th data-breakpoints="xs" data-type="number">МОЌ</th>
+  			<th data-breakpoints="xs sm" data-type="number">ПОЧИТ</th>
+  		</tr>
+  	</thead>
+  	<tbody>
+      {% for key, row in clans %}
+    		<tr>
+    			<td>{{row.id}}</td>
+    			<td>  <img src="{{auth.user.get_gravatar(row.email,40)}}" width="40" height="40" style="border-radius:50%;"> {{row.name}}</td>
+    			<td>{{row.pari}}$</td>
+    			<td>{{row.mok}}</td>
+    			<td>{{row.pocit}}</td>
+    		</tr>
+      {% endfor %}
+  	</tbody>
+  </table>
+</div>
+</div>
+<script type="text/javascript">
+$(function(){
+  $('#clans').footable({
+    "paging": {
+  			"position": "center"
+  		},
+    "filtering": {
+			"container": "#formclan"
+		},
+    'on': {
+      'postinit.ft.table': function(e, ft) {
+        $('.input-group .form-control').css('width', $('#clan-search').width() - 42);
+      }
+    }
+  });
+  $('#igraci').footable({
+    "paging": {
+        "position": "center"
+      },
+    "filtering": {
+      "container": "#form"
+    },
+    'on': {
+      'postinit.ft.table': function(e, ft) {
+        $('.input-group .form-control').css('width', $('#card-search').width() - 42);
+      }
+    }
+  });
+});
+</script>

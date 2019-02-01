@@ -1,0 +1,278 @@
+{% if x %}
+<style media="screen">
+.container-fluid{
+  padding-top: 120px;
+}
+.card .btn-group{
+  width: 100%;
+}
+.card .btn-group .btn{
+  width: 33.6%;
+  border-radius: 0px;
+  padding-bottom: 0;
+  background-color: #000;
+  border-color: #000;
+}
+.card .btn-group .btn svg{
+  width: 40px;
+  height: 40px;
+}
+</style>
+<div class="card-navigation">
+  <ul class="nav nav-fill">
+    <li class="nav-item" id="1">
+      <a class="nav-link">PROFIL</a>
+    </li>
+    <li class="nav-item" id="2">
+      <a class="nav-link">GARAZA</a>
+    </li>
+    <li class="nav-item" id="3">
+      <a class="nav-link">MISII</a>
+    </li>
+  </ul>
+</div>
+{% endif %}
+<div class='container p-0'></div>
+<div class="card-columns carCards" id="first">
+  {% if person.email == "" %}
+  <div class="card bg-danger">
+    <h4 class="mb-0 p-3 text-white">Акаунтот е убиен од {{person.password}}</h4>
+  </div>
+  {% endif %}
+  <div class="card">
+   <img class="card-img-top" src="{{baseUrl}}/resources/img/sidebar.png" height="200px">
+   <div class="card-img-overlay">
+      <div class="img">
+        {% if not x %}<a href="https://en.gravatar.com/emails/" target="_blank"> {% endif %}
+        <div class="progress blue">
+          <span class="progress-left">
+            <span class="progress-bar"></span>
+          </span>
+          <span class="progress-right">
+            <span class="progress-bar"></span>
+          </span>
+          <div class="progress-value">
+           <span class="num">...</span>
+           <img  src="{{auth.user.get_gravatar(person.email)}}" width="92" height="92">
+          </div>
+        </div>
+        </a>
+        <script type="text/javascript">
+          $(function(){
+            var input = {{person.prom.procent()}};
+            if(input == 100){input--;}
+            var output = (360 * input) / 100;
+            if(output <= 180){
+              output1 = output;
+              output2 = 0;
+            }else{
+              output1 = 180 ;
+              output2= output - 180;
+            }
+            $('.card-img-overlay .progress .progress-value .num').html(input+'%');
+            $('.card-img-overlay .progress .progress-right .progress-bar').css('-webkit-transform',"rotate("+output1+"deg)");
+            $('.card-img-overlay .progress .progress-left .progress-bar').css('-webkit-transform',"rotate("+output2+"deg)");
+          });
+        </script>
+      </div>
+      <div class="name">
+        <span>{{person.username}} |</span>
+        {% if person.contact.clan %}<span>{{person.contact.clan}}</span>{% else %}clan:nan{% endif %}<br>
+        {{ person.prom.nameRank() }}
+      </div>
+   </div>
+   {% if x and person.email != "" %}
+   <div class="btn-group btn-group-lg" role="group">
+     <input type="hidden" value="{{person.id}}">
+     <button type="button" class="btn btn-dark block">{%include 'templates/svg/block.svg'%}</button>
+     <button type="button" class="btn btn-dark atack pt-1"> {%include 'templates/svg/napad.svg'%}</button>
+     <button type="button" class="btn btn-dark pocit"> {%include 'templates/svg/pocitpl.svg'%}</button>
+   </div>
+   {% endif %}
+    <div class="card-body pb-0">
+      <div class="row mb-0">
+        <div class="col col-6">
+          {%include'templates/svg/gem.svg'%}
+          <span data-toggle="tooltip" data-placement="top" title="Почит">{{person.prom.pocit}}</span>
+        </div>
+        <div class="col col-auto">
+           {%include 'templates/svg/money-bag.svg'%}
+           <span data-toggle="tooltip" data-placement="top" title="Пари">{{person.prom.pari}}$</span>
+         </div>
+        <div class="w-100"></div>
+       <div class="col col-6">
+          {%include 'templates/svg/flag.svg'%}
+          <span data-toggle="tooltip" data-placement="top" title="Поени за напад">{{person.prom.points}}</span>
+        </div>
+        <div class="col col-auto">
+           {%include 'templates/svg/mok.svg'%}
+           <span data-toggle="tooltip" data-placement="top" title="Моќ">{{person.prom.mok}}</span>
+         </div>
+        <div class="w-100"></div>
+        <div class="col">
+           {%include 'templates/svg/hearts.svg'%}
+           <span id="sila" data-toggle="tooltip" data-placement="top" title="Сила">{{person.prom.health}}</span>
+         </div>
+        <div class="col">
+          {%include 'templates/svg/gun.svg'%}
+          <span data-toggle="tooltip" data-placement="top" title="Убиства">{{person.prom.ubistva}}</span>
+        </div>
+        <div class="w-100"></div>
+     <div class="col">
+          {%include 'templates/svg/atwin.svg'%}
+          <span data-toggle="tooltip" data-placement="top" title="Победени напади">{{person.prom.atack_wins}}</span>
+        </div>
+       <div class="col">
+          {%include 'templates/svg/atlos.svg'%}
+          <span data-toggle="tooltip" data-placement="top" title="Изгубени напади">{{person.prom.atack_loses}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% for key,item in weapons[0] %}
+    <div class="card" >
+    <img class="card-img-top" src="{{baseUrl}}/resources/img/{{item.type}}/{{item.id}}.png">
+    <h3 class="title">{{item.title}}</h3>
+    <div class="card-body pb-0">
+      <div class="row mb-0">
+      <div class="col" data-toggle="tooltip" data-placement="top" title="Цена">
+          {%include 'templates/svg/mok.svg'%}
+          <span>{{item.reward('mok')* weapons[1][key] }}</span>
+        </div>
+      <div class="col" data-toggle="tooltip" data-placement="top" title="kolicina">
+          {%include 'templates/svg/zaliha.svg'%}
+          <span>{{weapons[1][key]}}</span>
+        </div>
+      </div>
+    </div>
+    </div>
+  {% else %}
+  <div class="card">
+    <svg class="w-100 d-block rounded" viewBox="0 0 840 740" version="1.1" xmlns="http://www.w3.org/2000/svg">
+      <g transform="matrix(1,0,0,1,700,240)" >
+      <path fill="rgb(86,101,115)" fill-opacity="1" d=" M-350.0669860839844,12.932999610900879 C-350.0669860839844,12.932999610900879 -325.72698974609375,-25.673999786376953 -325.72698974609375,-25.673999786376953 C-324.34100341796875,-27.87299919128418 -321.25799560546875,-28.18600082397461 -319.4580078125,-26.31100082397461 C-319.4580078125,-26.31100082397461 -299,-5 -299,-5 C-299,-5 -258.7080078125,-67.26899719238281 -258.7080078125,-67.26899719238281 C-257.0480041503906,-69.83499908447266 -253.24000549316406,-69.66600036621094 -251.81300354003906,-66.96399688720703 C-251.81300354003906,-66.96399688720703 -209.5489959716797,13.065999984741211 -209.5489959716797,13.065999984741211 C-208.8459930419922,14.39799976348877 -209.81199645996094,
+      16 -211.3179931640625,16 C-211.3179931640625,16 -348.375,16 -348.375,16 C-349.9490051269531,16 -350.9070129394531,14.265000343322754 -350.0669860839844,12.932999610900879z"></path><path fill="rgb(86,101,115)" fill-opacity="1" d=" M-330,-75 C-330,-83.28399658203125 -323.28399658203125,-90 -315,-90 C-306.71600341796875,-90 -300,-83.28399658203125 -300,-75 C-300,-66.71600341796875 -306.71600341796875,-60 -315,-60 C-323.28399658203125,-60 -330,-66.71600341796875 -330,-75z"></path></g>
+    		<rect id="Rectangle-6-Copy" fill="#ECF0F1" x="0" y="420" width="100%" height="100%"></rect>
+    		<rect id="Rectangle-5" fill="#D7DCDD" x="80" y="476" width="266" height="50" rx="2"></rect>
+    		<rect id="Rectangle-5-Copy" fill="#D7DCDD" x="500" y="476" width="266" height="50" rx="2"></rect>
+    		<rect id="Rectangle-3" fill="#D7DCDD" x="80" y="560" width="685" height="50" rx="2"></rect>
+    		<rect id="Rectangle-3-Copy" fill="rgb(86,101,115)" x="300" y="555" width="60" height="60" rx="2"></rect>
+        <rect id="Rectangle-btn" fill="rgb(86,101,115)" x="0" y="660" width="100%" height="80" rx="2"></rect>
+        <rect id="Rectangle-btn-text" fill="#D7DCDD" x="295" y="680" width="270" height="40" rx="2"></rect>
+        <text transform="rotate(-35)" x="-200" y="580" fill="var(--dark)" style="font-size: 80px;font-weight:600;">NEMAS KUPENO!</text>
+    </svg>
+  </div>
+  {% endfor %}
+</div>
+<div class="card-columns carCards" id="second"style="display:none">
+  {% for key, item in row2[0] %}
+    <div class="card">
+    <img class="card-img-top" src="{{baseUrl}}/resources/img/cars/{{item.id}}.png" alt="Card image cap">
+    <h3 class="title">{{item.title}}</h3>
+    <div class="card-body pb-0">
+      <div class="row carCards mb-0">
+        <div class="col" data-toggle="tooltip" data-placement="top" title="Парична вредност">
+          {%include 'templates/svg/money-bag.svg'%}
+          <span>{{item.price}}$</span>
+        </div>
+        <div class="col col" data-toggle="tooltip" data-placement="top" title="Брзина">
+          {%include 'templates/svg/speed.svg'%}
+          <span>{{item.speed}}kph</span>
+        </div>
+        <div class="w-100"></div>
+        <div class="col" data-toggle="tooltip" data-placement="top" title="Dmg na kola">
+          {%include 'templates/svg/dmg.svg'%}
+          <span>{{row2[1][key]}}%</span>
+        </div>
+        <div class="col" data-toggle="tooltip" data-placement="top" title="Седишта">
+          {%include 'templates/svg/seat.svg'%}
+          <span>{{item.seats}}</span>
+        </div>
+      </div>
+    </div>
+    </div>
+    {% else %}
+    <div class="card">
+      <svg class="w-100 d-block rounded" viewBox="0 0 840 740" version="1.1" xmlns="http://www.w3.org/2000/svg">
+        <g transform="matrix(1,0,0,1,700,240)" >
+        <path fill="rgb(86,101,115)" fill-opacity="1" d=" M-350.0669860839844,12.932999610900879 C-350.0669860839844,12.932999610900879 -325.72698974609375,-25.673999786376953 -325.72698974609375,-25.673999786376953 C-324.34100341796875,-27.87299919128418 -321.25799560546875,-28.18600082397461 -319.4580078125,-26.31100082397461 C-319.4580078125,-26.31100082397461 -299,-5 -299,-5 C-299,-5 -258.7080078125,-67.26899719238281 -258.7080078125,-67.26899719238281 C-257.0480041503906,-69.83499908447266 -253.24000549316406,-69.66600036621094 -251.81300354003906,-66.96399688720703 C-251.81300354003906,-66.96399688720703 -209.5489959716797,13.065999984741211 -209.5489959716797,13.065999984741211 C-208.8459930419922,14.39799976348877 -209.81199645996094,
+        16 -211.3179931640625,16 C-211.3179931640625,16 -348.375,16 -348.375,16 C-349.9490051269531,16 -350.9070129394531,14.265000343322754 -350.0669860839844,12.932999610900879z"></path><path fill="rgb(86,101,115)" fill-opacity="1" d=" M-330,-75 C-330,-83.28399658203125 -323.28399658203125,-90 -315,-90 C-306.71600341796875,-90 -300,-83.28399658203125 -300,-75 C-300,-66.71600341796875 -306.71600341796875,-60 -315,-60 C-323.28399658203125,-60 -330,-66.71600341796875 -330,-75z"></path></g>
+          <rect id="Rectangle-6-Copy" fill="#ECF0F1" x="0" y="420" width="100%" height="100%"></rect>
+          <rect id="Rectangle-5" fill="#D7DCDD" x="80" y="476" width="266" height="50" rx="2"></rect>
+          <rect id="Rectangle-5-Copy1" fill="#D7DCDD" x="400" y="476" width="150" height="50" rx="2"></rect>
+          <rect id="Rectangle-5-Copy2" fill="#D7DCDD" x="600" y="476" width="160" height="50" rx="2"></rect>
+          <rect id="Rectangle-3" fill="#D7DCDD" x="80" y="560" width="180" height="50" rx="2"></rect>
+          <rect id="Rectangle-3-Copy1" fill="#D7DCDD" x="300" y="560" width="150" height="50" rx="2"></rect>
+          <rect id="Rectangle-3-Copy2" fill="#D7DCDD" x="500" y="560" width="260" height="50" rx="2"></rect>
+          <rect id="Rectangle-btn" fill="rgb(86,101,115)" x="0" y="660" width="100%" height="80" rx="2"></rect>
+          <rect id="Rectangle-btn-text" fill="#D7DCDD" x="295" y="680" width="270" height="40" rx="2"></rect>
+          <text transform="rotate(-35)" x="-200" y="580" fill="var(--dark)" style="font-size: 80px;font-weight:600;">NEMAS KUPENO!</text>
+        </svg>
+    </div>
+  {% endfor %}
+</div>
+<div class="card-columns" id="last" style="display:none;column-count:1;">
+  <div class="card">
+    <style media="screen">
+      tr td svg{
+        margin-bottom: -8px;
+        width: 30px;
+      }
+    </style>
+    <table class="table" id="misii" data-paging="true" data-paging-size="5" data-paging-position="center">
+  	<thead class="thead-dark">
+  		<tr>
+  			<th>#</th>
+  			<th>МИСИЈА</th>
+  			<th data-breakpoints="xs">ПОТРЕБНО</th>
+  			<th data-breakpoints="xs sm">ДОБИВКА</th>
+  		</tr>
+  	</thead>
+  	<tbody>
+      {% for item in misii %}
+      <tr>
+        <td scope="row" class="pb-0">
+          {% if item.rank > person.prom.rank %}
+            {%include 'templates/svg/block.svg' %}
+          {% else %}
+            {% if item.status(person.inventory) %}
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 26" width="25px" class="d-inline-block mt-1">
+              <path fill="var(--green)" d="m.3,14c-0.2-0.2-0.3-0.5-0.3-0.7s0.1-0.5 0.3-0.7l1.4-1.4c0.4-0.4 1-0.4 1.4,0l.1,.1 5.5,5.9c0.2,0.2 0.5,0.2 0.7,0l13.4-13.9h0.1v-8.88178e-16c0.4-0.4 1-0.4 1.4,0l1.4,1.4c0.4,0.4 0.4,1 0,1.4l0,0-16,16.6c-0.2,0.2-0.4,0.3-0.7,0.3-0.3,0-0.5-0.1-0.7-0.3l-7.8-8.4-.2-.3z"/>
+              </svg>
+            {% else %}
+              <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21.9 21.9"  width="25px" class="d-inline-block mt-1">
+              <path fill="var(--red)" d="M14.1,11.3c-0.2-0.2-0.2-0.5,0-0.7l7.5-7.5c0.2-0.2,0.3-0.5,0.3-0.7s-0.1-0.5-0.3-0.7l-1.4-1.4C20,0.1,19.7,0,19.5,0  c-0.3,0-0.5,0.1-0.7,0.3l-7.5,7.5c-0.2,0.2-0.5,0.2-0.7,0L3.1,0.3C2.9,0.1,2.6,0,2.4,0S1.9,0.1,1.7,0.3L0.3,1.7C0.1,1.9,0,2.2,0,2.4  s0.1,0.5,0.3,0.7l7.5,7.5c0.2,0.2,0.2,0.5,0,0.7l-7.5,7.5C0.1,19,0,19.3,0,19.5s0.1,0.5,0.3,0.7l1.4,1.4c0.2,0.2,0.5,0.3,0.7,0.3  s0.5-0.1,0.7-0.3l7.5-7.5c0.2-0.2,0.5-0.2,0.7,0l7.5,7.5c0.2,0.2,0.5,0.3,0.7,0.3s0.5-0.1,0.7-0.3l1.4-1.4c0.2-0.2,0.3-0.5,0.3-0.7  s-0.1-0.5-0.3-0.7L14.1,11.3z"/>
+              </svg>
+            {% endif %}
+          {% endif %}
+        </td>
+        <td>{{item.title}}</td>
+        <td>
+          {% for key, x in item.konditions('requirements') %}
+            {% if key == 'pari' %}{%include 'templates/svg/money-bag.svg' %}{% endif %}
+            {% if key == 'mok' %}{%include 'templates/svg/mok.svg' %}{% endif %}
+            {% if key == 'pocit' %}{%include 'templates/svg/gem.svg' %}{% endif %}
+            {% if key == 'points' %}{%include 'templates/svg/flag.svg' %}{% endif %}
+            {{x}}{{key == 'pari' ? '$'}}
+          {% endfor %}
+        </td>
+        <td>
+          {% for key, x in item.konditions('price') %}
+            {% if key == 'pari' %}{%include 'templates/svg/money-bag.svg' %}{% endif %}
+            {% if key == 'mok' %}{%include 'templates/svg/mok.svg' %}{% endif %}
+            {% if key == 'pocit' %}{%include 'templates/svg/gem.svg' %}{% endif %}
+            {% if key == 'points' %}{%include 'templates/svg/flag.svg' %}{% endif %}
+            {{x}}{{key == 'pari' ? '$'}}
+          {% endfor %}
+        </td>
+      </tr>
+      {% endfor %}
+  	</tbody>
+  </table>
+  <script type="text/javascript">
+  $(function(){
+    $('#misii').footable();
+  });
+  </script>
+  </div>
+</div>

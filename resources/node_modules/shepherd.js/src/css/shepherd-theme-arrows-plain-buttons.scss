@@ -1,0 +1,26 @@
+@import "./variables";
+
+$background-color: $color-white;
+$color: #444444;
+$header-background-color: #eeeeee;
+$use-drop-shadow: true;
+
+@import "./base";
+
+.shepherd-element {
+  .shepherd-content {
+    header {
+      border-radius: 5px 5px 0 0;
+    }
+
+    footer {
+      .shepherd-buttons {
+        li {
+          .shepherd-button {
+            text-decoration: none;
+          }
+        }
+      }
+    }
+  }
+}
