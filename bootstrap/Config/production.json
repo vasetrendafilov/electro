@@ -1,6 +1,6 @@
 {
   "app":{
-    "baseUrl" : "http://opimusnewsfresh.com/",
+    "baseUrl" : "http://e3c4b8fe.ngrok.io",
     "recaptcha":"6LeVuSoUAAAAACG7LW0ii_PAQBpM9yokuqFC6PdX",
     "hash":{
       "algo": "PASSWORD_BCRYPT",
@@ -10,7 +10,7 @@
   "db":{
     "driver":"mysql",
     "host":"sql103.con.mk",
-    "database":"mkd_18989075_vase",
+    "database":"electro",
     "username":"mkd_18989075",
     "password":"joker11",
     "collation":"utf8_unicode_ci",

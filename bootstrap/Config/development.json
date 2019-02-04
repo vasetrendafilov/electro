@@ -1,6 +1,6 @@
 {
   "app":{
-    "baseUrl" : "http://localhost/mafija2",
+    "baseUrl" : "http://localhost/electro",
     "recaptcha":"6LeVuSoUAAAAACG7LW0ii_PAQBpM9yokuqFC6PdX",
     "hash":{
       "algo": "PASSWORD_BCRYPT",
@@ -10,7 +10,7 @@
   "db":{
     "driver":"mysql",
     "host":"localhost",
-    "database":"mafija",
+    "database":"elecro",
     "username":"root",
     "password":"",
     "collation":"utf8_unicode_ci",

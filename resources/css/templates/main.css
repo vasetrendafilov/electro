@@ -61,7 +61,7 @@ position: relative;
   --red:#ec1a23;
 }
 .background{
-  background-image: url("/mafija2/resources/img/background.png");
+  background-color: #282c34;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -81,7 +81,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 @media only screen and (max-width: 768px) {
   .background{
-    background-image: url("/mafija2/resources/img/mobile.png");
+    background-image: url("/electro/resources/img/mobile.png");
   }
 }
 @media only screen and (min-width: 1024px) {

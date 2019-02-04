@@ -14,13 +14,13 @@ class AdminController extends Controller
     ]);
   }
   public function postAdmin($request, $response)
-  {
+  {/*
     $user = $this->auth->user();
     $activate = $this->randomlib->generateString(128);
     $this->Mail->send('email/auth/activate.twig',['user' => $user, 'activate' => $activate],function($message) use ($user){
       $message->to($user->email);
       $message->subject('Vi blagodarime za registracija');
-    });
+    });*/
   }
 
 }

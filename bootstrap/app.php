@@ -18,7 +18,7 @@ $app = new \Slim\App([
 
 $container = $app->getContainer();
 $container['config'] = function () {
-  return Config::load(__DIR__.'/Config/development.json');
+  return Config::load(__DIR__.'/Config/production.json');
 };
 
 $capsule = new \Illuminate\Database\Capsule\Manager;
@@ -47,6 +47,9 @@ $container['device'] = function ($container){
 };
 $container['hash'] = function ($container){
     return new \App\Helpers\Hash($container);
+};
+$container['kolo'] = function (){
+    return new \App\Helpers\Kolo();
 };
 $container['view'] = function ($container){
     $view = new \Slim\Views\Twig(__DIR__ . '/../resources/views', [

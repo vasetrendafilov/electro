@@ -91,12 +91,6 @@ class AuthController extends Controller
       'active_hash' => $this->hash->hash($activate)
       ]);
       $user->permissions()->create(UserPermission::$defaults);
-      $user->energy()->create(Energy::$defaults);
-      $user->prom()->create(Prom::$defaults);
-      $user->inventory()->create(Inventory::$defaults);
-      $user->contact()->create(Contact::$defaults);
-      $user->bank()->create(Bank::$defaults);
-      $user->task()->create(['task' => 0]);
 
       $this->Mail->send('email/auth/activate.twig',['user' => $user, 'activate' => $activate],function($message) use ($user){
         $message->to($user->email);

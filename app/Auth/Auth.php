@@ -41,17 +41,12 @@ class Auth
 				setcookie($this->config['auth.remember'], "{$rememberIdentifier}___{$rememberToken}", Carbon::parse('+1 week ')->timestamp,'/');
       }
 			$_SESSION[$this->config['auth.session']] = $user->id;
- 			$clan = Clan::where('name',$user->contact->clan)->first();
-			if($clan){$clan->refreshStats();}
-			$user->energy->calculateEnergy();
-			$user->energy->update(['status' => 1 ]);
 			return 3;
 		}
 		return 1;
 	}
 	public function logout()
 	{
-    $this->user()->energy->update(['status' => 0 ]);
 		if(isset($_COOKIE[$this->config['auth.remember']])){
       $this->user()->removeRememberCredentials();
 			setcookie($this->config['auth.remember'], null, 1, "/", null);
