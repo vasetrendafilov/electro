@@ -17,26 +17,22 @@
   	</div>
   </div>
 {% endif %}
-<div class="row">
-  <div class="col-md-5 col-md-offset-5">
-      <h2>Најава</h2>
-        <form action="{{path_for('auth.signin')}}" method="post">
-          <div class="form-group">
-            <label for="username">Корисничко Име</label>
-            <input type="text" class="form-control"  name="username" placeholder="Внеси Име" value="{{ request.username }}"/>
-          </div>
-          <div class="form-group">
-            <label for="password">Лозинка</label>
-            <input type="password" class="form-control"  name="password" placeholder="Внеси Лозинка"/>
-          </div>
-          <div class="form-group custom-control custom-checkbox">
-            <input class="custom-control-input" type="checkbox" value="on" name="remember" id="remember">
-            <label for="remember" class="custom-control-label">Запомни Ме</label>
-            <a class="forgot-pass" href="{{path_for('password.recover')}}">Заборави Лозинка?</a>
-          </div>
-          <button type="submit" class="btn btn-danger">Најави се</button>
-          {{ csrf_field() | raw }}
-        </form>
-  </div>
-</div>
+  <h2>Најава</h2>
+    <form action="{{path_for('auth.signin')}}" method="post">
+      <div class="form-group">
+        <label for="username">Корисничко Име</label>
+        <input type="text" class="form-control"  name="username" placeholder="Внеси Име" value="{{ request.username }}"/>
+      </div>
+      <div class="form-group">
+        <label for="password">Лозинка</label>
+        <input type="password" class="form-control"  name="password" placeholder="Внеси Лозинка"/>
+      </div>
+      <div class="form-group custom-control custom-checkbox">
+        <input class="custom-control-input" type="checkbox" value="on" name="remember" id="remember">
+        <label for="remember" class="custom-control-label">Запомни Ме</label>
+        <a class="forgot-pass" href="{{path_for('password.recover')}}">Заборави Лозинка?</a>
+      </div>
+      <button type="submit" class="btn btn-dark">Најави се</button>
+      {{ csrf_field() | raw }}
+    </form>
 {% endblock %}

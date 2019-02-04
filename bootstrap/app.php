@@ -18,7 +18,7 @@ $app = new \Slim\App([
 
 $container = $app->getContainer();
 $container['config'] = function () {
-  return Config::load(__DIR__.'/Config/production.json');
+  return Config::load(__DIR__.'/Config/development.json');
 };
 
 $capsule = new \Illuminate\Database\Capsule\Manager;

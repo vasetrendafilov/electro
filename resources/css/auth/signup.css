@@ -1,22 +1,11 @@
-.btn{
-  margin-top: 10px;
-  margin-bottom: 50px;
+.is-valid , .is-invalid{border-width: 1.5px;}
+
+.site .form-group{ max-width: 450px;}
+.site{
+    padding: 0 1rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 1rem;
+    grid-auto-rows: minmax(50px,auto);
+    margin-bottom: 2rem;
 }
-.btn:disabled {
-  background-color: var(--gray-dark);
-  border-color: var(--gray-dark);
-  opacity: 1;
-}
-.is-valid{
-  border-width: 1.5px;
-}
-.is-invalid{
-  border-width: 1.5px;
-}
-.second{
-  margin-top: 45px;
-}
-@media (max-width: 425px) {
-  .second{
-    margin-top: 0px;
-  }

@@ -15,8 +15,8 @@ class UserController extends Controller
     $password_new = $request->getParam('password_new');
     $password_confirm = $request->getParam('password_confirm');
     $v = $this->Validator->validate([
-      'password'  => [$password,'required|min(6)|checkPassword'],
-      'password_new' => [$password_new,'required|min(6)'],
+      'password'  => [$password,'required|min(8)|checkPassword'],
+      'password_new' => [$password_new,'required|min(8)'],
       'password_confirm' => [$password_confirm,'required|matches(password_new)']
     ]);
     if ($v->passes()){

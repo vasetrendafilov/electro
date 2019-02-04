@@ -1,4 +1,10 @@
-
-h2{
-  margin-bottom: 20px;
+.is-valid , .is-invalid{border-width: 1.5px;}
+.site .form-group{ max-width: 450px;}
+.site{
+    padding: 0 1rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 1rem;
+    grid-auto-rows: minmax(50px,auto);
+    margin-bottom: 2rem;
 }

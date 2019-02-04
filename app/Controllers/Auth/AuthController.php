@@ -4,12 +4,6 @@ namespace App\Controllers\Auth;
 
 use App\Models\User\User;
 use App\Models\User\UserPermission;
-use App\Models\User\Prom;
-use App\Models\User\Inventory;
-use App\Models\User\Energy;
-use App\Models\User\Contact;
-use App\Models\User\Bank;
-use App\Models\User\Crime;
 use App\Controllers\Controller;
 use Carbon\Carbon;
 
@@ -70,8 +64,6 @@ class AuthController extends Controller
     $email = $request->getParam('email');
     $password = $request->getParam('password');
     $password_confirm = $request->getParam('password_confirm');
-    $drzava = $request->getParam('drzava');
-    $pol = $request->getParam('pol');
 
     $v = $this->Validator->validate([
       'username' => [$username,'required|alnumDash|max(50)|min(4)|uniqueUsername'],
@@ -84,8 +76,6 @@ class AuthController extends Controller
       $user = User::create([
       'username'    => $username,
       'email'       => $email,
-      'drzava'      => $drzava,
-      'pol'         => $pol,
       'password'    => password_hash($password, PASSWORD_DEFAULT),
       'active'      => false,
       'active_hash' => $this->hash->hash($activate)

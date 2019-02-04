@@ -5,15 +5,23 @@
 <link rel="stylesheet" href= "{{baseUrl}}/resources/css/home.css">
 {% endblock %}
 {% block content %}
- {% if auth.check %}
 
-{% else %}
-  <form action="{{path_for('home')}}" method="post">
-    <p>Koloto go vnesuvas tuka oblik<br>Primer za eden element: leftnode_value_rightnode (0_10_1_1_20_2)<br></p>
-    <input type="text" name="kolo" value="" style="width:500px;">
-    <input type="submit" value="Submit">
-    {{ csrf_field() | raw }}
-  </form>
-{% endif %}
+  <div class="drag">
+  B
+  </div>
+  <div class="canvas rounded">
+    <canvas id="canvas" width="300" height="300"></canvas>
+  </div>
+  <div class="result">
+    <form action="{{path_for('home')}}" method="post">
+      <p style="color: rgb(189, 193, 198)">Koloto go vnesuvas tuka oblik<br>Primer za eden element: leftnode_value_rightnode (0_10_1_1_20_2)<br></p>
+      <input type="text" name="kolo" value="">
+      <input type="submit" value="Submit">
+      {{ csrf_field() | raw }}
+    </form>
+  </div>
+  <footer>
+    vase
+  </footer>
   <script type="text/javascript" src="{{baseUrl}}/resources/js/home.js"></script>
 {% endblock %}

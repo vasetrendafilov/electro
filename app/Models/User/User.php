@@ -12,14 +12,14 @@ class User Extends Model
 		'name',
 		'email',
 		'password',
-		'drzava',
-		'pol',
 		'active',
     'active_hash',
     'recover_hash',
     'remember_identifier',
     'remember_token'
 	];
+	public function permissions(){ return $this->hasOne('App\Models\User\UserPermission');}
+
 	public function updateRememberCredentials($identifier, $token)
 	{
 		$this->update([
@@ -27,7 +27,6 @@ class User Extends Model
 			'remember_token'      => $token
 		]);
 	}
-	public function removeRememberCredentials(){
-		$this->updateRememberCredentials(null, null);
-	}
+	public function removeRememberCredentials(){$this->updateRememberCredentials(null, null);}
+
 }

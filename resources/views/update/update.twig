@@ -3,35 +3,25 @@
 <link rel="stylesheet" href= "{{baseUrl}}/resources/css/update/profile.css">
 {% endblock %}
 {% block content %}
-<div class="row ">
-<div class="col-md-5 col-md-offset-5">
-<form action="{{path_for('update')}}" method="post" autocomplete="off">
-<div class="form-group">
 <h2>Промени лозинка</h2>
-<div class="form-group">
-<label for="password">Стара Лозинка</label>
-<input type="password"  class="form-control" id="password" placeholder="Стара лозинка" name="password" >
-{% if errors.first('password') %}
-<span class="help-block">{{errors.first('password')}}</span>
-{% endif %}
-</div>
-<div class="form-group">
-<label for="password_new">Нова Лозинка</label>
-<input type="password" class="form-control" id="password_new" placeholder="Нова лозинка" name="password_new" >
-{% if errors.first('password_new') %}
-<span class="help-block">{{errors.first('password_new')}}</span>
-{% endif %}
-</div>
-<div class="form-group">
-<label for="password_confirm">Потврди Лозинка</label>
-<input type="password" class="form-control" id="password_confirm" placeholder="Потврди лозинка" name="password_confirm" >
-{% if errors.first('password_confirm') %}
-<span class="help-block">{{errors.first('password_confirm')}}</span>
-{% endif %}
-</div>
-{{ csrf_field() | raw }}
-<button type="submit" class="btn btn-danger" >АЖУРИРАЈ</button>
+<form action="{{path_for('update')}}" method="post" autocomplete="off">
+  <div class="form-group">
+    <label for="password">Стара Лозинка</label>
+    <input type="password"  class="form-control {{errors.first('password') ? 'is-invalid'}}" id="password" placeholder="Стара лозинка" name="password" >
+    <div class="{{errors.first('password') ? 'invalid-feedback':'valid-feedback'}}"> {{errors.first('password')}}</div>
+  </div>
+  <div class="form-group">
+    <label for="password">Нова Лозинка</label>
+    <input type="password"  class="form-control {{errors.first('password_new') ? 'is-invalid'}}" id="password_new" placeholder="Нова лозинка" name="password_new" >
+    <div class="{{errors.first('password_new') ? 'invalid-feedback':'valid-feedback'}}"> {{errors.first('password_new')}}</div>
+  </div>
+  <div class="form-group">
+    <label for="password">Потврди Лозинка</label>
+    <input type="password"  class="form-control {{errors.first('password_confirm') ? 'is-invalid'}}" id="password_new" placeholder="Потврди лозинка" name="password_confirm" >
+    <div class="{{errors.first('password_confirm') ? 'invalid-feedback':'valid-feedback'}}"> {{errors.first('password_confirm')}}</div>
+  </div>
+  {{ csrf_field() | raw }}
+  <button type="submit" class="btn btn-dark" >АЖУРИРАЈ</button>
 </form>
-</div>
-</div>
+
 {% endblock %}

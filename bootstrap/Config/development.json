@@ -10,7 +10,7 @@
   "db":{
     "driver":"mysql",
     "host":"localhost",
-    "database":"elecro",
+    "database":"electro",
     "username":"root",
     "password":"",
     "collation":"utf8_unicode_ci",
@@ -18,7 +18,7 @@
     "prefix":""
   },
   "mail":{
-    "smtp_debug": 2,
+    "smtp_debug": 0,
     "host": "smtp.gmail.com",
     "smtp_auth": true,
     "username": "theuw.mk@gmail.com",
