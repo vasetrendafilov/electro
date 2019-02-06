@@ -5,13 +5,18 @@
 <link rel="stylesheet" href= "{{baseUrl}}/resources/css/home.css">
 {% endblock %}
 {% block content %}
-
+<script type="text/javascript" src="{{baseUrl}}/resources/js/templates/konva.js"></script>
   <div class="drag">
-  B
+    <div class="btn-group" role="group" aria-label="Basic example">
+      <button type="button" id="add" class="btn btn-primary">{%include 'templates/svg/resistor.svg'%}</button>
+      <button type="button" id="in" class="btn btn-primary">
+        <svg height="40" width="40"> <circle cx="20" cy="20" r="8" stroke="black" stroke-width="2" fill="none" /> </svg>
+      </button>
+    </div>
   </div>
-  <div class="canvas rounded">
-    <canvas id="canvas" width="300" height="300"></canvas>
-  </div>
+  <div id="container" class="canvas">
+     {%include 'templates/svg/grid.svg'%}
+    </div>
   <div class="result">
     <form action="{{path_for('home')}}" method="post">
       <p style="color: rgb(189, 193, 198)">Koloto go vnesuvas tuka oblik<br>Primer za eden element: leftnode_value_rightnode (0_10_1_1_20_2)<br></p>
@@ -23,5 +28,18 @@
   <footer>
     vase
   </footer>
+ <div class="edit">
+   <div class="input-group">
+    <input type="text" id="edit-value" class="form-control pr-1" aria-describedby="button-addon4" style="width:50px;">
+    <div class="input-group-append" id="button-addon4">
+      <button type="button" class="btn btn-primary" id="edit-check"><i class="fas fa-check"></i></button>
+      <button type="button" class="btn btn-primary" id="edit-rl"><i class="fas fa-undo"></i></button>
+      <button type="button" class="btn btn-primary" id="edit-rr" ><i class="fas fa-redo"></i></button>
+      <button type="button" class="btn btn-primary" id="edit-delete"><i class="fas fa-trash"></i></button>
+    </div>
+  </div>
+ </div>
+
+
   <script type="text/javascript" src="{{baseUrl}}/resources/js/home.js"></script>
 {% endblock %}

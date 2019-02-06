@@ -2,7 +2,7 @@
 <html lang="en mk">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="theme-color" content="#000">
     <meta name="apple-mobile-web-app-status-bar-style" content="#000">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{{baseUrl}}/resources/css/templates/bootstrap.min.css">
     <link rel="stylesheet" href="{{baseUrl}}/resources/css/templates/main.css">
     <link rel="stylesheet" href="{{baseUrl}}/resources/css/templates/navigation.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     {% block head %} {% endblock %}
   </head>
   <body>
@@ -29,7 +30,7 @@
     <script src="{{baseUrl}}/resources/js/templates/propper.js"></script>
     <script src="{{baseUrl}}/resources/js/templates/bootstrap.min.js"></script>
     {% if auth.check %}
-    <script src="{{baseUrl}}/resources/js/templates/swipe.js"></script>
+      <!-- Simplebar<script src="{{baseUrl}}/resources/js/templates/swipe.js"></script>-->
     <!-- Simplebar  <script src="{{baseUrl}}/resources/node_modules/shepherd.js/dist/js/shepherd.min.js"></script> -->
     {% endif %}
   </body>

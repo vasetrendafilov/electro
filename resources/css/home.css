@@ -1,14 +1,20 @@
 .site{
     display: grid;
     grid-template-columns: 1fr;
-    grid-gap: 1rem;
+    grid-gap: .5rem;
     grid-auto-rows: minmax(50px,auto);
     grid-template-areas:
-     "nav"
+     "....."
+     "drag"
      "canvas"
      "result"
-     "drag"
      " footer";
+}
+.edit{
+  position: absolute;
+  top: 100px;
+  left: 10px;
+  display: none;
 }
 footer{
    grid-area: footer;
@@ -16,13 +22,18 @@ footer{
 }
 .drag{
    grid-area: drag;
-  background-color: blue;
+    margin: 0 5px;
+}
+.drag .btn-group .btn{
+  padding: 2px .5rem;
 }
 .canvas{
+  touch-action: none;
+  overflow: hidden;
    grid-area: canvas;
-  background-color: grey;
-  margin: 0 10px;
-
+   height: 80vh;
+   background-image: url("/electro/resources/views/templates/svg/grid.svg");
+   background-color: var(--light-grey);
 }
 .result{
    grid-area: result;
@@ -31,8 +42,9 @@ footer{
 @media only screen and (min-width: 500px)  {
   .site {
       grid-template-columns: 1fr 1fr;
+      grid-gap: 1rem;
       grid-template-areas:
-       "nav  nav "
+       ".....  ..... "
        "canvas result"
        "drag ......."
        "....... footer";
@@ -42,7 +54,7 @@ footer{
       .site {
         grid-template-columns: 1fr 1fr 1fr;
         grid-template-areas:
-         "nav  nav nav "
+         ".... .... ..... "
          "canvas canvas result"
          "canvas canvas result"
          "drag drag footer";
