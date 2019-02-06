@@ -45,8 +45,8 @@ footer{
       grid-gap: 1rem;
       grid-template-areas:
        ".....  ..... "
-       "canvas result"
-       "drag ......."
+       "canvas canvas"
+       "drag result"
        "....... footer";
   }
   }
