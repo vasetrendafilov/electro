@@ -1,11 +1,10 @@
 .site{
     display: grid;
     grid-template-columns: 1fr;
-    grid-gap: .5rem;
     grid-auto-rows: minmax(50px,auto);
     grid-template-areas:
      "....."
-     "drag"
+      "drag"
      "canvas"
      "result"
      " footer";
@@ -22,16 +21,16 @@ footer{
 }
 .drag{
    grid-area: drag;
-    margin: 0 5px;
+    margin: .5rem 5px 0 5px;
 }
 .drag .btn-group .btn{
-  padding: 2px .5rem;
+  padding: 1.5px .5rem 0 .5rem;
 }
 .canvas{
   touch-action: none;
   overflow: hidden;
    grid-area: canvas;
-   height: 80vh;
+   height: 90vh;
    background-image: url("/electro/resources/views/templates/svg/grid.svg");
    background-color: var(--light-grey);
 }

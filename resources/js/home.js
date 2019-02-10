@@ -1,9 +1,9 @@
 $(function(){
   $("#add").click(function(){
-    addOtpornik();
+    element =1;
   });
   $("#in").click(function(){
-    addJazol();
+    element =2;
   });
   $("#edit-check").click(function(){
     var otpornik = stage.find('#'+editValue.attr('name'))[0];
@@ -15,11 +15,19 @@ $(function(){
   $("#edit-rl").click(function(){
     var otpornik = stage.find('#'+editValue.attr('name'))[0];
     otpornik.rotate(-10);
+    if(otpornik.children[2].name() != 'none')
+      updateLine(otpornik.children[2]);
+    if (otpornik.children[3].name() != 'none')
+         updateLine(otpornik.children[3]);
     layer.draw();
   });
   $("#edit-rr").click(function(){
     var otpornik = stage.find('#'+editValue.attr('name'))[0];
     otpornik.rotate(10);
+    if(otpornik.children[2].name() != 'none')
+      updateLine(otpornik.children[2]);
+    if (otpornik.children[3].name() != 'none')
+         updateLine(otpornik.children[3]);
     layer.draw();
   });
   $("#edit-delete").click(function(){
@@ -29,6 +37,7 @@ $(function(){
     edit.fadeOut();
   });
   //edit objekts
+  var element;
   var edit = $(".edit");
   var editValue = $("#edit-value");
   //edit objekts
@@ -42,6 +51,7 @@ $(function(){
   var lineId=1;
   var lastDist = 0;
    var startScale = 1;
+   var tempId='';
 
    function getDistance(p1, p2) {
        return Math.sqrt(Math.pow((p2.x - p1.x), 2) + Math.pow((p2.y - p1.y), 2));
@@ -53,43 +63,65 @@ $(function(){
     height: height,
     draggable: true
   });
+  stage.on('click  tap',function(){
+    switch (element) {
+      case 1:
+        addOtpornik(stage.getPointerPosition());
+        break;
+        case 2:
+          addJazol(stage.getPointerPosition());
+          break;
+    }
+    element=0;
+  });
   var layer = new Konva.Layer();
   stage.add(layer);
 
-  function addJazol() {
-    var circle = new Konva.Circle({
-     x: Math.random() * stage.getWidth() / 2,
-     y: 40,
-     radius: 10,
-     fill: '#000',
-     id:i,
-     name:'0',
-     draggable: true
-   });
-   circle.on('dblclick  dbltap',function(){circle.destroy();});
-   circle.on('dragmove', function () {
-     var lines = stage.find('.'+circle.name());
-     if(lines.length < 1 || lines == undefined)return 0;
-      lines.each(function(line) {
-        if(line.className == 'Line')
-        line.destroy();
-        else
-        line.name(' ');
-      });
+  function addJazol(pos) {
+    var jazol = new Konva.Group({
+        x: (pos.x-20)/stage.scaleX() - stage.x()/stage.scaleX(),
+        y: (pos.y-20)/stage.scaleX() -stage.y()/stage.scaleX(),
+        id:i,
+        name:'',
+        draggable: true
+     });
+    var circle = new Konva.Circle({ x: 20, y: 20, radius: 7, fill: '#343a40'});
+    var hitbox = new Konva.Rect({ x:0, y:0, width:40, height:40 });
+    jazol.add(circle,hitbox);
+
+   jazol.on('dblclick  dbltap',function(){
+     jazol.destroy();
      layer.draw();
+   });
+   jazol.on('dragmove', function () {
+      if(jazol.name() != ''){
+       var par = jazol.name().split('_').filter(v => v);
+       for (var i = 0; i < par.length; i+=2) {
+         var lines = stage.find('.'+par[i]);
+         lines.forEach(function(line){
+           if(line.className == 'Line'){
+             var boundingBox = jazol.children[0].getClientRect({ relativeTo: stage });
+             var points = line.points();
+             points[par[i+1]]=boundingBox.x+7;
+             points[1+parseInt(par[i+1])]=boundingBox.y+7;
+           }
+         });
+       }
+    layer.draw();
+    }
   });
-   circle.on('click  tap',function(){
-   conect(circle);
+   jazol.on('click  tap',function(){
+   conect(jazol,true);
    });
     i++;
-    layer.add(circle);
+    layer.add(jazol);
     layer.draw();
   }
 
-  function addOtpornik() {
+  function addOtpornik(pos) {
       var group = new Konva.Group({
-           x: Math.random() * stage.getWidth()/2,
-           y: Math.random() * stage.getHeight()/2,
+           x: (pos.x-70)/stage.scaleX() - stage.x()/stage.scaleX(),
+           y: (pos.y-15)/stage.scaleX() -stage.y()/stage.scaleX(),
            id:i,
            name:'10',
            draggable: true
@@ -107,21 +139,19 @@ $(function(){
         x:5,
         y:0,
         fill: 'transparent',
-        stroke: '#000',
+        stroke: '#343a40',
         strokeWidth: 4,
       });
-        var leftNode = new Konva.Circle({
-         x: 0,
-         y: 15,
-         radius: 10,
-         fill: '#000'
-       });
-       var rightNode = new Konva.Circle({
-        x: 135,
-        y: 15,
-        radius: 10,
-        fill: '#000'
-      });
+      var leftNode = new Konva.Group({x: -13, y: -5,name:'none'});
+      var circle = new Konva.Circle({ x: 20, y: 20, radius: 7, fill: '#343a40'});
+      var hitbox = new Konva.Rect({ x:0, y:0, width:40, height:40});
+      leftNode.add(circle,hitbox);
+
+      var rightNode = new Konva.Group({x:108, y:-5, name:'none'});
+      var circle = new Konva.Circle({ x: 20, y: 20, radius: 7, fill: '#343a40'});
+      var hitbox = new Konva.Rect({ x:0, y:0, width:40, height:40});
+      rightNode.add(circle,hitbox);
+
       var vrednost = new Konva.Text({
          x: 47,
          y: 5,
@@ -129,7 +159,7 @@ $(function(){
          fontSize: 22,
          fontStyle:'bold',
          fontFamily: 'Calibri',
-         fill: '#000'
+         fill: '#343a40'
        });
        group.add(vrednost,otpornik,leftNode,rightNode);
 
@@ -150,57 +180,91 @@ $(function(){
        conect(leftNode);
      });
      group.on('dragmove', function () {
-       var lines = stage.find('.'+leftNode.name());
-       if(lines.length < 1 || lines == undefined){
-        lines = stage.find('.'+rightNode.name());
-        if(lines.length < 1 || lines == undefined) return 0;
-      }
-        lines.each(function(line) {
-          if(line.className == 'Line')
-          line.destroy();
-          else
-          line.name(' ');
-        });
-       layer.draw();
+       if(leftNode.name() != 'none')
+         updateLine(leftNode);
+       if (rightNode.name() != 'none')
+            updateLine(rightNode);
     });
       i++;
       layer.add(group);
       layer.draw();
     }
 
-  function conect(node) {
-  var boundingBox = node.getClientRect({ relativeTo: stage });
-  if(line){
-    xy.push(boundingBox.x + 10 ,boundingBox.y + 10);
+  function updateLine(node) {
+    var par = node.name().split('_');
+    var line = stage.find('.'+par[0])[0];
+    if(line.className == 'Line'){
+      var boundingBox = node.children[0].getClientRect({ relativeTo: stage });
+      var points = line.points();
+      points[par[1]]=boundingBox.x;
+      points[1+parseInt(par[1])]=boundingBox.y;
+      layer.draw();
+    }
+  }
 
+  function conect(node,jazol=false) {
+   if(!jazol)node.children[0].radius(0);
+  var boundingBox = node.children[0].getClientRect({ relativeTo: stage });
+  if(line){
+      jazol?xy.push(boundingBox.x+7 ,boundingBox.y+7):xy.push(boundingBox.x ,boundingBox.y);
     var conLine = new Konva.Line({
       points: [xy[0],xy[1],xy[2],xy[3]],
-      stroke: '#000',
+      stroke: '#343a40',
       strokeWidth: 4,
-      name: lineId.toString()
+      name: lineId.toString(),
+      id:'_'+tempId
     });
-  /*  var boundingBox = conLine.getClientRect({ relativeTo: stage });
-    var box = new Konva.Rect({
-             x: boundingBox.x-5,   za podobro klikanje
-             y: boundingBox.y,
-             width: boundingBox.width +10,
-             height: boundingBox.height,
-             stroke: 'red',
-             strokeWidth: 1
-         });*/
-  //  box.on('dblclick  dbltap',function(){conLine.destroy(); box.destroy();});
-  conLine.on('dblclick  dbltap',function(){conLine.destroy();});
-    node.name(lineId.toString());
+    conLine.on('dblclick  dbltap',function(){
+      if(conLine.id()!='_'){
+          conLine.destroy();
+          var type=1;
+          var jazliId = conLine.id().split('_').filter(v => v);
+          jazliId.forEach(function(jazol){
+            var node = stage.find('#'+jazol)[0];
+            var name = node.name().split('_').filter(v => v);
+            for (var i = 0; i < name.length; i+=2) if(name[i] == conLine.name()){ type = name[i+1];name.splice(i,i+2); break;}
+            node.name(name.join('_'));
+          });
+          if((type == 0 || type == 2) && jazliId.length == 1){
+            type = type == 0 ? 2:0;
+            var node = stage.find('.'+conLine.name()+'_'+type)[0];
+            node.add(new Konva.Rect({ x:0, y:0, width:40, height:40})).name('none');
+            node.children[0].radius(7);
+          }
+      }else{
+        var node = stage.find('.'+conLine.name()+'_0')[0];
+        node.add(new Konva.Rect({ x:0, y:0, width:40, height:40})).name('none');
+        node.children[0].radius(7);
+        node = stage.find('.'+conLine.name()+'_2')[0];
+        node.add(new Konva.Rect({ x:0, y:0, width:40, height:40})).name('none');
+        node.children[0].radius(7);
+      }
+
+      layer.draw();
+    });
+    if(jazol){
+      conLine.id(conLine.id()+'_'+node.id());
+      node.name(node.name()+'_'+lineId+'_2');
+    }else{
+      node.name(lineId+'_2');
+      node.children[1].destroy();
+    }
     layer.add(conLine);
-    layer.draw();
     xy = [];
     lineId++;
-   line = false;
+    line = false;
   }else{
+    if(jazol){
+      tempId = node.id();
+      node.name(node.name()+'_'+lineId+'_0');
+    }else{
+    node.name(lineId+'_0');
+    node.children[1].destroy();
+    }
     line = true;
-    node.name(lineId.toString());
-    xy.push(boundingBox.x + 10 ,boundingBox.y + 10);
+    jazol?xy.push(boundingBox.x+7 ,boundingBox.y+7):xy.push(boundingBox.x ,boundingBox.y);
   }
+    layer.draw();
 }
 
   //zomm in/out for mobile
