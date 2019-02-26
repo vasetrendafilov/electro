@@ -21,6 +21,8 @@ $app->group('',function() use ($app){
   $app->get('/reset-password', 'UserController:getResetPassword')->setName('password.reset');
   $app->post('/reset-password', 'UserController:postResetPassword');
 
+  $app->get('/calc', 'AjaxController:getCalc')->setName('calc');
+
   $app->get('/ajax/validate', 'AjaxController:getValidation')->setName('validate');
   $app->get('/activate', 'AuthController:getActivate')->setName('activate');
   $app->get('/send/activate', 'AuthController:getSendActivate')->setName('send.active');
