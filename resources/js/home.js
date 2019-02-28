@@ -244,7 +244,7 @@ $(function(){
   function conect(node,jazol=false) {
    if(set>0){
      node.children[0].name(set == 2 ? '0':'100');
-     node.children[0].fill('red');
+     node.children[0].fill('#007bff');
      set--;
      layer.draw();
      return 1;

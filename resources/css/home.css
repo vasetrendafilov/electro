@@ -16,16 +16,21 @@
   display: none;
 }
 footer{
-   grid-area: footer;
-  background-color: red;
+  grid-area: footer;
+  background-color: #202124;
+  text-align: center;
+  font-size: 1.2rem;
 }
+footer p{ margin-top: 1rem;}
 .drag{
    grid-area: drag;
     margin: .5rem 5px 0 5px;
 }
 .drag .btn-group .btn{
   padding: 1.5px .5rem 0 .5rem;
+  font-size: 28px;
 }
+
 .canvas{
   touch-action: none;
   overflow: hidden;
@@ -36,7 +41,7 @@ footer{
 }
 .result{
    grid-area: result;
-  background-color: black;
+   margin: 5px 5px;
 }
 @media only screen and (min-width: 500px)  {
   .site {

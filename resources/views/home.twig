@@ -10,25 +10,63 @@
     <div class="btn-group" role="group" aria-label="Basic example">
        <button type="button" id="add" class="btn btn-primary" style="border-bottom-left-radius:0">{%include 'templates/svg/resistor.svg'%}</button>
        <button type="button" id="in" class="btn btn-primary">
-         <svg height="30" width="30"> <circle cx="15" cy="15" r="8"  fill="#000" /> </svg>
+         <svg height="30" width="30"> <circle cx="15" cy="15" r="8"  fill="#fff" /> </svg>
        </button>
        <button type="button" id="calc" class="btn btn-primary" style="border-bottom-right-radius:0">AB</button>
-       <button type="button" id="out" class="btn btn-primary" style="border-bottom-right-radius:0">Output</button>
+       <button type="button" id="out" class="btn btn-primary" style="border-bottom-right-radius:0"><i class="fas fa-cogs"></i></button>
      </div>
   </div>
   <div id="container" class="canvas">
      {%include 'templates/svg/grid.svg'%}
     </div>
   <div class="result">
-    <form action="{{path_for('home')}}" method="post">
-      <p style="color: rgb(189, 193, 198)">Koloto go vnesuvas tuka oblik<br>Primer za eden element: leftnode_value_rightnode (0_10_1_1_20_2)<br></p>
-      <input type="text" name="kolo" value="">
-      <input type="submit" value="Submit">
-      {{ csrf_field() | raw }}
-    </form>
+    <div class="card mb-1">
+    <svg class="w-100 d-block rounded" viewBox="0 0 840 240" version="1.1" xmlns="http://www.w3.org/2000/svg">
+        <rect id="Rectangle-6-Copy" fill="#ECF0F1" x="0" y="0" width="100%" height="100%"></rect>
+        <rect id="Rectangle-5" fill="#D7DCDD" x="80" y="56" width="266" height="50" rx="2"></rect>
+        <rect id="Rectangle-5-Copy1" fill="#D7DCDD" x="400" y="56" width="150" height="50" rx="2"></rect>
+        <rect id="Rectangle-5-Copy2" fill="#D7DCDD" x="600" y="56" width="160" height="50" rx="2"></rect>
+        <rect id="Rectangle-3" fill="#D7DCDD" x="80" y="140" width="180" height="50" rx="2"></rect>
+        <rect id="Rectangle-3-Copy1" fill="#D7DCDD" x="300" y="140" width="150" height="50" rx="2"></rect>
+        <rect id="Rectangle-3-Copy2" fill="#D7DCDD" x="500" y="140" width="260" height="50" rx="2"></rect>
+      </svg>
+    </div>
+    <div class="card mb-1">
+    <svg class="w-100 d-block rounded" viewBox="0 0 840 240" version="1.1" xmlns="http://www.w3.org/2000/svg">
+            <rect id="Rectangle-6-Copy" fill="#ECF0F1" x="0" y="0" width="100%" height="100%"></rect>
+            <rect id="Rectangle-5" fill="#D7DCDD" x="80" y="56" width="266" height="50" rx="2"></rect>
+            <rect id="Rectangle-5-Copy1" fill="#D7DCDD" x="400" y="56" width="150" height="50" rx="2"></rect>
+            <rect id="Rectangle-5-Copy2" fill="#D7DCDD" x="600" y="56" width="160" height="50" rx="2"></rect>
+            <rect id="Rectangle-3" fill="#D7DCDD" x="80" y="140" width="180" height="50" rx="2"></rect>
+            <rect id="Rectangle-3-Copy1" fill="#D7DCDD" x="300" y="140" width="150" height="50" rx="2"></rect>
+            <rect id="Rectangle-3-Copy2" fill="#D7DCDD" x="500" y="140" width="260" height="50" rx="2"></rect>
+          </svg>
+      </div>
+      <div class="card mb-1">
+      <svg class="w-100 d-block rounded" viewBox="0 0 840 240" version="1.1" xmlns="http://www.w3.org/2000/svg">
+          <rect id="Rectangle-6-Copy" fill="#ECF0F1" x="0" y="0" width="100%" height="100%"></rect>
+          <rect id="Rectangle-5" fill="#D7DCDD" x="80" y="56" width="266" height="50" rx="2"></rect>
+          <rect id="Rectangle-5-Copy1" fill="#D7DCDD" x="400" y="56" width="150" height="50" rx="2"></rect>
+          <rect id="Rectangle-5-Copy2" fill="#D7DCDD" x="600" y="56" width="160" height="50" rx="2"></rect>
+          <rect id="Rectangle-3" fill="#D7DCDD" x="80" y="140" width="180" height="50" rx="2"></rect>
+          <rect id="Rectangle-3-Copy1" fill="#D7DCDD" x="300" y="140" width="150" height="50" rx="2"></rect>
+          <rect id="Rectangle-3-Copy2" fill="#D7DCDD" x="500" y="140" width="260" height="50" rx="2"></rect>
+        </svg>
+      </div>
+      <div class="card mb-1">
+      <svg class="w-100 d-block rounded" viewBox="0 0 840 240" version="1.1" xmlns="http://www.w3.org/2000/svg">
+          <rect id="Rectangle-6-Copy" fill="#ECF0F1" x="0" y="0" width="100%" height="100%"></rect>
+          <rect id="Rectangle-5" fill="#D7DCDD" x="80" y="56" width="266" height="50" rx="2"></rect>
+          <rect id="Rectangle-5-Copy1" fill="#D7DCDD" x="400" y="56" width="150" height="50" rx="2"></rect>
+          <rect id="Rectangle-5-Copy2" fill="#D7DCDD" x="600" y="56" width="160" height="50" rx="2"></rect>
+          <rect id="Rectangle-3" fill="#D7DCDD" x="80" y="140" width="180" height="50" rx="2"></rect>
+          <rect id="Rectangle-3-Copy1" fill="#D7DCDD" x="300" y="140" width="150" height="50" rx="2"></rect>
+          <rect id="Rectangle-3-Copy2" fill="#D7DCDD" x="500" y="140" width="260" height="50" rx="2"></rect>
+        </svg>
+      </div>
   </div>
   <footer>
-    vase
+    <p>Copyright (c) 2019 Electro All Rights Reserved</p>
   </footer>
  <div class="edit">
    <div class="input-group">
