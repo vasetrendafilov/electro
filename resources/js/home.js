@@ -261,6 +261,7 @@ $(function(){
       id:'_'+tempId
     });
     conLine.on('dblclick  dbltap',function(){
+      lineId--;
       conLine.destroy();
       if(conLine.id()!='_'){
           var type=1;
