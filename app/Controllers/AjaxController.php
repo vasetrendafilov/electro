@@ -32,10 +32,13 @@ class AjaxController extends Controller
      $this->kolo->addKolo(trim($request->getParam('kolo')));
 
      //$this->kolo->addRes("0_10_1_1_20_2_1_30_2_1_10_2_2_40_3_3_50_4_4_10_5_5_15_6_4_20_6_0_10_6");
-      if($this->kolo->calc())
-      echo $this->kolo->granka[0]->val;
+      if($this->kolo->calc()){
+      foreach ($this->kolo->steps as $key => $step) {
+       echo $step.'_';
+      }
+      }
       else foreach ($this->kolo->error as $err) {
-          echo "<br><br>".$err;
+          echo "0<br><br>".$err;
       }
    }
 }

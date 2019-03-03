@@ -13,40 +13,6 @@ $(function(){
     });
       layer.draw();
   });
-  $("#out").click(function(){
-    var kolo=[];
-    jazli.forEach(function(jazol) {
-      if(jazol.children.length == 2){
-        var name = jazol.name().split('_').filter(v => v);
-        for (var i = 0; i < name.length; i+=2)
-          if(node = stage.find('.'+name[i]+'_'+(name[i+1] == 0 ? '2':'0'))[0])
-            node.children[0].name(jazol.id().toString());
-      }
-    });
-    resistors.forEach(function(resistor) {
-      if(resistor.children.length == 4) kolo.push(resistor.children[2].children[0].name(),resistor.name(),resistor.children[3].children[0].name());
-    });
-    for (var i = 0; i < kolo.length; i+=3) {
-      if(kolo[i] == 0 || kolo[i+2] == 0){
-        temp = [kolo[0],kolo[1],kolo[2]];
-        kolo[0]=kolo[i];
-        kolo[1]=kolo[i+1];
-        kolo[2]=kolo[i+2];
-        kolo[i] = temp[0];
-        kolo[i+1] = temp[1];
-        kolo[i+2] = temp[2];
-      }
-    }
-    console.log(kolo.join('_'));
-    $.get("/electro/public/calc",{kolo:kolo.join('_')},function(data){
-      if(data.length < 100)
-       alert(data);
-       else{
-         $(window).scrollTop( 300 );
-       $('.result').html(data);
-        }
-    });
-  });
   $("#edit-check").click(function(){
     var otpornik = stage.find('#'+editValue.attr('name'))[0];
     otpornik.name(editValue.val());
@@ -82,11 +48,6 @@ $(function(){
   var element;
   var edit = $(".edit");
   var editValue = $("#edit-value");
-  //edit objekts
-  var container = $("#container");
-  var width = container.width();
-  var height = container.height();
-  var tween = null;
   var line = false;
   var xy=[];
   var i=1;
@@ -99,8 +60,8 @@ $(function(){
   var set;
   var stage = new Konva.Stage({
     container: 'container',
-    width: width,
-    height: height,
+    width: $("#container").width(),
+    height: $("#container").height(),
     draggable: true
   });
   stage.on('click  tap',function(){
@@ -201,7 +162,16 @@ $(function(){
          fontFamily: 'Calibri',
          fill: '#343a40'
        });
-       group.add(vrednost,otpornik,leftNode,rightNode);
+       var oznaka = new Konva.Text({
+          x: 55,
+          y: -24,
+          text: 'R'+i,
+          fontSize: 22,
+          fontStyle:'bold',
+          fontFamily: 'Calibri',
+          fill: '#343a40'
+        });
+       group.add(vrednost,otpornik,leftNode,rightNode,oznaka);
 
      otpornik.on('dblclick  dbltap',function(){
        var pos = stage.getPointerPosition();
@@ -244,9 +214,20 @@ $(function(){
   function conect(node,jazol=false) {
    if(set>0){
      node.children[0].name(set == 2 ? '0':'100');
-     node.children[0].fill('#007bff');
+     node.children[0].fill('#343a40');
+      var boundingBox = node.children[0].getClientRect({ relativeTo: stage });
+     var text = new Konva.Text({
+        x: 10,
+        y:-15,
+        text: set == 2 ? 'A':'B',
+        fontSize: 32,
+        fontFamily: 'Calibri',
+        fill: '#343a40'
+      });
      set--;
+     node.add(text);
      layer.draw();
+     if(set == 0) sendKolo();
      return 1;
    }
    if(!jazol)node.children[0].radius(0);
@@ -329,8 +310,51 @@ $(function(){
   }
     layer.draw();
 }
+
+  function sendKolo() {
+   var kolo=[];
+   jazli.forEach(function(jazol) {
+     if(jazol.children.length == 2){
+       var name = jazol.name().split('_').filter(v => v);
+       for (var i = 0; i < name.length; i+=2)
+         if(node = stage.find('.'+name[i]+'_'+(name[i+1] == 0 ? '2':'0'))[0])
+           node.children[0].name(jazol.id().toString());
+     }
+   });
+   resistors.forEach(function(resistor) {
+     if(resistor.children.length == 5) kolo.push(resistor.children[2].children[0].name(),resistor.id(),resistor.name(),resistor.children[3].children[0].name());
+   });
+   for (var i = 0; i < kolo.length; i+=4) {
+     if(kolo[i] == 0 || kolo[i+3] == 0){
+       temp = [kolo[0],kolo[1],kolo[2],kolo[3]];
+       kolo[0]=kolo[i];
+       kolo[1]=kolo[i+1];
+       kolo[2]=kolo[i+2];
+       kolo[3]=kolo[i+3];
+       kolo[i] = temp[0];
+       kolo[i+1] = temp[1];
+       kolo[i+2] = temp[2];
+       kolo[i+3] = temp[3];
+       break;
+     }
+   }
+   console.log(kolo.join('_'));
+   $.get("/electro/public/calc",{kolo:kolo.join('_')},function(data){
+     if(data[0] != '0'){
+       steps = data.split('_');
+       for (var i = 0; i < steps.length - 1; i++) {
+        $('.result').append(" <div class='tile'> <h1>"+steps[i]+"</h1>   </div>");
+       }
+        $(window).scrollTop( 300 );
+      }else{
+        $(window).scrollTop( 300 );
+      $('.result').html(data);
+       }
+   });
+ }
   //zomm in/out for mobile
   stage.getContent().addEventListener('touchmove', function(evt) {
+       if(i!=1){//za koga nema nisto da ne zomira
          var touch1 = evt.touches[0];
          var touch2 = evt.touches[1];
          if(touch1 && touch2) {
@@ -351,6 +375,7 @@ $(function(){
              stage.draw();
              lastDist = dist;
          }
+       }
      }, false);
   stage.getContent().addEventListener('touchend', function() { lastDist = 0; }, false);
   //zomm in/out for desktop
@@ -359,6 +384,7 @@ $(function(){
   }
   var scaleBy = 1.2;
    stage.on('wheel', e => {
+     if(i!=1){
      e.evt.preventDefault();
      var oldScale = stage.scaleX();
      var mousePointTo = {
@@ -378,6 +404,7 @@ $(function(){
      };
      stage.position(newPos);
      stage.batchDraw();
+   }
    });
 
 });

@@ -12,22 +12,22 @@ class Kolo
   public $jazli=[];
   public $granka=[];
   public $error=[];
+  public $steps=[];
 
   public function addKolo($kolo)
   {
       $this->kolo= $kolo;
       $temp = explode('_', $kolo);
-      for ($i=0; $i < count($temp) ; $i+=3) {
-          array_push($this->otpornik, new Otpornik((int)$temp[$i],(int)$temp[$i+1],(int)$temp[$i+2]));
+      for ($i=0; $i < count($temp) ; $i+=4) {
+          array_push($this->otpornik, new Otpornik((int)$temp[$i],(int)$temp[$i+1],(int)$temp[$i+2],(int)$temp[$i+3]));
           array_key_exists((int)$temp[$i], $this->jazli) ? $this->jazli[$temp[$i]]++ : $this->jazli[$temp[$i]]=1;
-          array_key_exists((int)$temp[$i+2], $this->jazli) ? $this->jazli[$temp[$i+2]]++ : $this->jazli[$temp[$i+2]]=1;
+          array_key_exists((int)$temp[$i+3], $this->jazli) ? $this->jazli[$temp[$i+3]]++ : $this->jazli[$temp[$i+3]]=1;
         }
         $this->jazli[0]++;
         $this->jazli[100]++;
   }
   public function calc()
   {
-
     $cnt=0;
     while($this->otpornik != null){
       $this->granka[$cnt] = new Granka($this->otpornik[0]);
@@ -39,6 +39,11 @@ class Kolo
         }
        $cnt++;
     }
+      foreach ($this->granka as $key => $granka)
+      if(count($granka->ids)>1){
+        array_push($this->steps,$granka->formula());
+        $granka->makeId();
+      }
     foreach ($this->granka as $key => $value)
       array_push($this->error,var_export($value, true));
     $err=0;
@@ -69,6 +74,11 @@ class Kolo
         }
        $cnt++;
     }
+    foreach ($this->granka as $key => $granka)
+    if(count($granka->ids)>1){
+      array_push($this->steps,$granka->formula());
+      $granka->makeId();
+    }
   }
   public function paralel()
   {
@@ -76,16 +86,32 @@ class Kolo
         $vrski = $this->get($otpornik);
         if(count($vrski) > 1){
           $zbir = 0;
+          $temp = [];
           foreach ($vrski as $i){
             $zbir += 1/$this->granka[$i]->val;
-            if($i != $key )unset($this->granka[$i]);
+            array_push($temp,$this->granka[$i]->id);
+            if($i != $key ){
+              $otpornik->id .= $this->granka[$i]->id;
+              unset($this->granka[$i]);
+            }
           }
+          array_push($this->steps,($this->paralelFormula($temp)).' = '.(1/$zbir).'Ω');
           $otpornik->val = 1/$zbir;
           $this->jazli[$otpornik->left]-=count($vrski)-1;
           $this->jazli[$otpornik->right]-=count($vrski)-1;
           break;
         }
     }
+  }
+  public function paralelFormula($ids)
+  {
+    $temp1='1/R';
+    $temp2='';
+    foreach ($ids as $id) {
+      $temp1 .= (string)$id;
+      $temp2 .= " 1/R$id +";
+    }
+    return $temp1.' = '.substr($temp2,0, -2);
   }
   public function get($node)
   {

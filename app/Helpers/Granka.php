@@ -7,16 +7,21 @@ class Granka
   public $left;
   public $right;
   public $val;
+  public $ids=[];
+  public $id;
 
   public function __construct($next){
     $this->left = $next->left;
     $this->right = $next->right;
     $this->val = $next->val;
+    array_push($this->ids,$next->id);
+    $this->id = $next->id;
   }
   public function add($from,$to,$next)
   {
       $this->val += $next->val;
       $this->{$from} = $next->{$to};
+      array_push($this->ids,$next->id);
       return true;
   }
   public function check($next,$jazli)
@@ -31,5 +36,20 @@ class Granka
     }
     return false;
   }
-
+  public function formula()
+  {
+    $temp1='R';
+    $temp2='';
+    foreach ($this->ids as $id) {
+      $temp1 .= (string)$id;
+      $temp2 .= " R$id +";
+    }
+    return $temp1.' = '.substr($temp2,0, -2)." = $this->val".'Ω';
+  }
+  public function makeId()
+  {
+    $temp ='';
+    foreach ($this->ids as $id)
+      $temp .= (string)$id;
+  }
 }

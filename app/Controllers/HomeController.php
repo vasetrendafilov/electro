@@ -12,7 +12,7 @@ class HomeController extends Controller
   {
     $this->kolo->addKolo(trim($request->getParam('kolo')));
 
-    //$this->kolo->addRes("0_10_1_1_20_2_1_30_2_1_10_2_2_40_3_3_50_4_4_10_5_5_15_6_4_20_6_0_10_6");
+    //$this->kolo->addKolo("0_1_10_1_1_2_20_2_1_3_30_2_1_4_10_2_2_5_40_3_3_6_50_4_4_7_10_5_5_8_15_6_4_9_20_6_0_10_10_6");
      $i=0;
      while ($this->kolo->otpornik->child != null) {
        $this->kolo->otpornik->addType($this->kolo->jazli);
