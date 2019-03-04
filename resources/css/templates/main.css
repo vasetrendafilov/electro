@@ -1,5 +1,6 @@
 :root{
   --light-grey:rgb(189, 193, 198);
+  --blue:#5e97f6;
 }
 body {
   font-family: "Roboto", sans-serif!important;

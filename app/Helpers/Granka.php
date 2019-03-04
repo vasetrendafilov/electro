@@ -51,5 +51,7 @@ class Granka
     $temp ='';
     foreach ($this->ids as $id)
       $temp .= (string)$id;
+     $this->id = $temp;
+     $this->ids = [];
   }
 }
